@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #7c3aed; /* Cyber Purple */
+  --color-primary-dark: #5b21b6;
+  --color-primary-light: #0066ff; /* Electric Blue */
+
+  --color-accent: #00a896; /* Dark Cyan */
+  --color-accent-hover: #008272;
+
+  --color-dark-bg: #080710; /* Cyber Black */
+  --color-dark-card: #131125; /* Dark violet card */
+
+  --font-sans: 'Inter', 'sans-serif';
+}
+
+@utility text-gradient {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-primary-light to-primary;
+}
+
+@utility text-gradient-gold {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-accent to-[#00ff87];
+}
+
+@utility text-gradient-brand {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-[#7c3aed] via-[#0066ff] via-[#00a896] to-[#00ff87];
+}
+
+@utility text-gradient-neon {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-[#7c3aed] via-[#0066ff] to-[#00ff87];
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased;
+}
+
+.cyber-grid-animate {
+  animation: grid-drift 40s linear infinite;
+}
+
+@keyframes grid-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 4rem 4rem;
+  }
+}
