@@ -27,4 +27,12 @@ export default defineConfig([
       'react-refresh/only-export-components': 'warn',
     },
   },
+  {
+    files: ['server/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
 ])
