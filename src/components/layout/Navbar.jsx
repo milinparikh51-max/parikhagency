@@ -103,8 +103,16 @@ const Navbar = () => {
                         </button>
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <div className="md:hidden flex items-center">
+                    {/* Mobile Controls */}
+                    <div className="md:hidden flex items-center space-x-4">
+                        <button onClick={() => setIsCartOpen(true)} className="relative text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors">
+                            <ShoppingCart className="w-5 h-5" />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </button>
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             className="text-gray-700 hover:text-primary dark:text-gray-300 focus:outline-none"
@@ -117,29 +125,98 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {isOpen && (
-                <div className="md:hidden bg-white dark:bg-dark-bg border-t border-gray-100 dark:border-dark-card absolute w-full">
-                    <div className="px-4 pt-2 pb-6 space-y-2">
-                        <Link
-                            to="/"
-                            onClick={() => setIsOpen(false)}
-                            className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
-                        >
-                            Home
-                        </Link>
-                        <Link
-                            to="/products"
-                            onClick={() => setIsOpen(false)}
-                            className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
-                        >
-                            Products
-                        </Link>
-                        <Link
-                            to="/customise"
-                            onClick={() => setIsOpen(false)}
-                            className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
-                        >
-                            Customise
-                        </Link>
+                <div className="md:hidden bg-white dark:bg-dark-bg border-t border-gray-100 dark:border-dark-card absolute w-full left-0 right-0 shadow-lg z-50">
+                    <div className="px-4 pt-2 pb-6 space-y-4">
+                        {/* Navigation Links */}
+                        <div className="space-y-1">
+                            <Link
+                                to="/"
+                                onClick={() => setIsOpen(false)}
+                                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
+                            >
+                                Home
+                            </Link>
+                            <Link
+                                to="/products"
+                                onClick={() => setIsOpen(false)}
+                                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
+                            >
+                                Products
+                            </Link>
+                            <Link
+                                to="/customise"
+                                onClick={() => setIsOpen(false)}
+                                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
+                            >
+                                Customise
+                            </Link>
+                        </div>
+
+                        {/* Search Bar on Mobile */}
+                        <div className="px-3">
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder="Search products..."
+                                    className="w-full px-4 py-2 pl-10 text-sm border border-gray-200 dark:border-gray-800 rounded-lg bg-gray-50 dark:bg-dark-card text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary"
+                                />
+                                <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                            </div>
+                        </div>
+
+                        {/* User Actions on Mobile */}
+                        <div className="border-t border-gray-100 dark:border-gray-800 pt-4 px-3">
+                            {user ? (
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-3 py-1">
+                                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center text-primary font-bold text-sm">
+                                            {user.name.charAt(0).toUpperCase()}
+                                        </div>
+                                        <div className="overflow-hidden">
+                                            <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user.name}</p>
+                                            <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-1 pt-2">
+                                        {user.role === 'admin' && (
+                                            <Link
+                                                to="/admin"
+                                                className="block py-2 text-sm font-semibold text-primary hover:underline"
+                                                onClick={() => setIsOpen(false)}
+                                            >
+                                                Admin Dashboard
+                                            </Link>
+                                        )}
+                                        <Link
+                                            to="/my-orders"
+                                            className="block py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-primary flex items-center gap-2"
+                                            onClick={() => setIsOpen(false)}
+                                        >
+                                            <Package className="w-4 h-4" />
+                                            My Orders
+                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                setIsOpen(false);
+                                                logout();
+                                            }}
+                                            className="block w-full text-left py-2 text-sm text-red-600 hover:underline"
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <Link
+                                    to="/login"
+                                    onClick={() => setIsOpen(false)}
+                                    className="w-full flex justify-center py-2.5 px-4 bg-gradient-to-r from-[#7c3aed] to-[#0066ff] text-white rounded-full font-bold text-sm hover:brightness-110 transition-all shadow-md shadow-blue-500/10"
+                                >
+                                    <User className="w-4 h-4 mr-2" />
+                                    Login / Register
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}

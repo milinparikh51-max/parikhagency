@@ -90,9 +90,10 @@ const CustomisePage = () => {
                         <motion.div
                             drag
                             dragConstraints={{ left: -150, right: 150, top: -150, bottom: 150 }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 cursor-move"
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 cursor-move touch-none"
                             style={{
-                                mixBlendMode: ['Mugs', 'Apparel'].includes(selectedProduct.category) ? 'multiply' : 'normal'
+                                mixBlendMode: ['Mugs', 'Apparel'].includes(selectedProduct.category) ? 'multiply' : 'normal',
+                                touchAction: 'none'
                             }}
                         >
                             <div className="relative group">
@@ -116,10 +117,11 @@ const CustomisePage = () => {
                         <motion.div
                             drag
                             dragConstraints={{ left: -100, right: 100, top: -100, bottom: 100 }}
-                            className={`cursor-move z-20 text-4xl font-bold p-4 ${selectedFont} ${!isPen ? selectedColor : ''} ${!isPen ? 'drop-shadow-lg' : ''} select-none`}
+                            className={`cursor-move z-20 text-4xl font-bold p-4 ${selectedFont} ${!isPen ? selectedColor : ''} ${!isPen ? 'drop-shadow-lg' : ''} select-none touch-none`}
                             style={{
                                 writingMode: isPen ? 'vertical-rl' : 'horizontal-tb',
                                 transform: isPen ? 'rotate(180deg)' : 'none',
+                                touchAction: 'none',
                                 ...(isPen ? {
                                     color: 'rgba(0, 0, 0, 0.7)', // Darker base for depth
                                     textShadow: '1px 1px 0px rgba(255, 255, 255, 0.5), -1px -1px 0px rgba(0, 0, 0, 0.8)', // Highlight bottom-right, Shadow top-left for "engraved" look
