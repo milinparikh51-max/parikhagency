@@ -75,10 +75,17 @@ const Footer = () => {
                 </div>
 
                 <div className="border-t border-gray-100 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-sm text-gray-500 text-center md:text-left">
-                        © {new Date().getFullYear()} PARIKH AGENCY. All rights reserved.
-                        <span className="block mt-1 text-xs text-gray-400">developed and made by - Milin parikh</span>
-                    </p>
+                    <div className="text-center md:text-left">
+                        <p className="text-sm text-gray-500">
+                            © {new Date().getFullYear()} PARIKH AGENCY. All rights reserved.
+                        </p>
+                        <p className="text-[10px] tracking-[0.2em] uppercase font-semibold text-gray-400 mt-1">
+                            Developed and Made by{" "}
+                            <span className="text-gradient-brand font-black tracking-[0.1em] text-xs hover:opacity-80 transition-opacity">
+                                MILIN PARIKH
+                            </span>
+                        </p>
+                    </div>
                     <div className="flex items-center gap-4">
                         <a
                             href="https://www.instagram.com/milinparikh7"
