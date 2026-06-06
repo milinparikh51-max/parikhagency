@@ -77,6 +77,7 @@ const Footer = () => {
                 <div className="border-t border-gray-100 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-sm text-gray-500 text-center md:text-left">
                         © {new Date().getFullYear()} PARIKH AGENCY. All rights reserved.
+                        <span className="block mt-1 text-xs text-gray-400">developed and made by - Milin parikh</span>
                     </p>
                     <div className="flex items-center gap-4">
                         <a
