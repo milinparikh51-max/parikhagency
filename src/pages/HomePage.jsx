@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, PenTool, Coffee, Shirt, Sparkles, Star } from 'lucide-react';
+import { ArrowRight, PenTool, Coffee, Shirt, Sparkles } from 'lucide-react';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -29,9 +29,9 @@ const HomePage = () => {
     }, []);
 
     const orbitRings = React.useMemo(() => [
-        { id: 1, size: '420px', duration: 35, clockwise: true, color: 'rgba(124, 58, 237, 0.12)' },
-        { id: 2, size: '650px', duration: 50, clockwise: false, color: 'rgba(0, 102, 255, 0.08)' },
-        { id: 3, size: '850px', duration: 75, clockwise: true, color: 'rgba(0, 255, 135, 0.06)' }
+        { id: 1, size: '420px', duration: 25, clockwise: true, color: 'rgba(124, 58, 237, 0.25)' },
+        { id: 2, size: '650px', duration: 35, clockwise: false, color: 'rgba(0, 102, 255, 0.20)' },
+        { id: 3, size: '850px', duration: 45, clockwise: true, color: 'rgba(0, 255, 135, 0.15)' }
     ], []);
 
     return (
@@ -81,9 +81,9 @@ const HomePage = () => {
                             }}
                             animate={{
                                 rotate: ring.clockwise ? [0, 360] : [360, 0],
-                                scale: [1, 1.08, 0.95, 1],
-                                x: [0, 15, -15, 0],
-                                y: [0, -20, 20, 0],
+                                scale: [1, 1.12, 0.92, 1],
+                                x: [0, 25, -25, 0],
+                                y: [0, -30, 30, 0],
                             }}
                             transition={{
                                 rotate: {
