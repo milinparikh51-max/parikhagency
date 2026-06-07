@@ -106,6 +106,7 @@ export const StoreProvider = ({ children }) => {
         try {
             const localData = localStorage.getItem('parikh-link-clicks');
             return localData ? JSON.parse(localData) : {
+                'Main URL Visits (Homepage Loads)': 0,
                 'Navbar: Home': 0,
                 'Navbar: Products': 0,
                 'Navbar: Customise': 0,
@@ -125,6 +126,7 @@ export const StoreProvider = ({ children }) => {
             };
         } catch {
             return {
+                'Main URL Visits (Homepage Loads)': 0,
                 'Navbar: Home': 0,
                 'Navbar: Products': 0,
                 'Navbar: Customise': 0,
@@ -158,6 +160,7 @@ export const StoreProvider = ({ children }) => {
 
     const resetClicks = () => {
         setLinkClicks({
+            'Main URL Visits (Homepage Loads)': 0,
             'Navbar: Home': 0,
             'Navbar: Products': 0,
             'Navbar: Customise': 0,

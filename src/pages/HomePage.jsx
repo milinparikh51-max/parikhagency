@@ -8,6 +8,10 @@ const HomePage = () => {
     const navigate = useNavigate();
     const { trackClick } = useStore();
 
+    React.useEffect(() => {
+        trackClick('Main URL Visits (Homepage Loads)');
+    }, []);
+
     // Floating particles config for animated background nodes
     const floatingNodes = [
         { id: 1, x: "10%", y: "20%", delay: 0, color: "#0066ff" },
