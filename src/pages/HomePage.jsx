@@ -16,60 +16,88 @@ const HomePage = () => {
         { id: 6, x: "90%", y: "50%", delay: 2.5, color: "#0066ff" }
     ];
 
-    const cyberStreaks = [
-        { id: 1, shape: 'line', width: '150px', height: '1.5px', top: '12%', leftFrom: '-20%', leftTo: '120%', delay: 0.2, duration: 5.5, color: '#0066ff', angle: -10 },
-        { id: 2, shape: 'circle', width: '8px', height: '8px', top: '38%', leftFrom: '120%', leftTo: '-20%', delay: 0.5, duration: 7.2, color: '#00ff87', angle: 0 },
-        { id: 3, shape: 'line', width: '200px', height: '1px', top: '68%', leftFrom: '-25%', leftTo: '115%', delay: 1.0, duration: 8.5, color: '#7c3aed', angle: -20 },
-        { id: 4, shape: 'square', width: '6px', height: '6px', top: '22%', leftFrom: '-10%', leftTo: '110%', delay: 0.7, duration: 4.8, color: '#ffd700', angle: 45 },
-        { id: 5, shape: 'line', width: '120px', height: '2px', top: '82%', leftFrom: '115%', leftTo: '-15%', delay: 1.2, duration: 6.0, color: '#0066ff', angle: 15 },
-        { id: 6, shape: 'circle', width: '12px', height: '12px', top: '52%', leftFrom: '-15%', leftTo: '115%', delay: 0, duration: 9.0, color: '#00ff87', angle: 0 },
-        { id: 7, shape: 'line', width: '180px', height: '1.5px', top: '28%', leftFrom: '120%', leftTo: '-20%', delay: 1.1, duration: 7.8, color: '#7c3aed', angle: -15 },
-        { id: 8, shape: 'square', width: '8px', height: '8px', top: '72%', leftFrom: '-10%', leftTo: '110%', delay: 1.8, duration: 6.5, color: '#0066ff', angle: 30 },
-        { id: 9, shape: 'circle', width: '6px', height: '6px', top: '88%', leftFrom: '-15%', leftTo: '115%', delay: 1.5, duration: 5.2, color: '#00ff87', angle: 0 },
-        { id: 10, shape: 'line', width: '250px', height: '1.2px', top: '45%', leftFrom: '-30%', leftTo: '120%', delay: 0.4, duration: 7.5, color: '#ffd700', angle: -8 },
-        { id: 11, shape: 'line', width: '160px', height: '1px', top: '8%', leftFrom: '115%', leftTo: '-20%', delay: 0.8, duration: 6.2, color: '#00ff87', angle: 12 },
-        { id: 12, shape: 'circle', width: '10px', height: '10px', top: '45%', leftFrom: '-15%', leftTo: '115%', delay: 0.3, duration: 5.8, color: '#0066ff', angle: 0 },
-        { id: 13, shape: 'square', width: '5px', height: '5px', top: '58%', leftFrom: '110%', leftTo: '-10%', delay: 1.4, duration: 6.8, color: '#7c3aed', angle: 60 },
-        { id: 14, shape: 'line', width: '220px', height: '1.8px', top: '76%', leftFrom: '-25%', leftTo: '125%', delay: 0.6, duration: 7.0, color: '#ffd700', angle: -12 },
-        { id: 15, shape: 'circle', width: '7px', height: '7px', top: '18%', leftFrom: '-15%', leftTo: '115%', delay: 1.7, duration: 4.5, color: '#00ff87', angle: 0 },
-        { id: 16, shape: 'line', width: '130px', height: '1.4px', top: '33%', leftFrom: '120%', leftTo: '-20%', delay: 0.9, duration: 5.0, color: '#0066ff', angle: -5 },
-        { id: 17, shape: 'square', width: '7px', height: '7px', top: '92%', leftFrom: '-10%', leftTo: '110%', delay: 2.0, duration: 8.0, color: '#ffd700', angle: 15 },
-        { id: 18, shape: 'circle', width: '9px', height: '9px', top: '62%', leftFrom: '115%', leftTo: '-15%', delay: 1.3, duration: 5.6, color: '#7c3aed', angle: 0 }
-    ];
+    const cyberDust = React.useMemo(() => {
+        return Array.from({ length: 30 }).map((_, i) => ({
+            id: i,
+            size: Math.random() * 3 + 1,
+            x: `${Math.random() * 100}%`,
+            y: `${Math.random() * 100}%`,
+            delay: Math.random() * 5,
+            duration: Math.random() * 8 + 8,
+            color: ['#0066ff', '#00ff87', '#7c3aed', '#ffd700'][i % 4]
+        }));
+    }, []);
+
+    const orbitRings = React.useMemo(() => [
+        { id: 1, size: '420px', duration: 35, clockwise: true, color: 'rgba(124, 58, 237, 0.12)' },
+        { id: 2, size: '650px', duration: 50, clockwise: false, color: 'rgba(0, 102, 255, 0.08)' },
+        { id: 3, size: '850px', duration: 75, clockwise: true, color: 'rgba(0, 255, 135, 0.06)' }
+    ], []);
 
     return (
         <div className="space-y-24 pb-24 bg-gradient-to-b from-[#080710] to-[#0f0e26] text-white min-h-screen overflow-hidden relative pt-12">
             
-            {/* Cyber Light Streaks / Shooting Stars */}
+            {/* Cyber Dust Twinkling Particles */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-                {cyberStreaks.map(streak => (
+                {cyberDust.map(particle => (
                     <motion.div
-                        key={streak.id}
-                        className="absolute opacity-[0.25]"
+                        key={particle.id}
+                        className="absolute rounded-full"
                         style={{
-                            top: streak.top,
-                            width: streak.width,
-                            height: streak.height,
-                            backgroundColor: streak.shape !== 'line' ? streak.color : undefined,
-                            background: streak.shape === 'line' 
-                                ? `linear-gradient(to right, transparent, ${streak.color}, transparent)` 
-                                : undefined,
-                            boxShadow: `0 0 10px ${streak.color}`,
-                            borderRadius: streak.shape === 'circle' ? '50%' : streak.shape === 'square' ? '2px' : undefined,
-                            transform: `rotate(${streak.angle}deg)`
+                            left: particle.x,
+                            top: particle.y,
+                            width: particle.size,
+                            height: particle.size,
+                            backgroundColor: particle.color,
+                            boxShadow: `0 0 8px ${particle.color}`,
                         }}
-                        animate={{ 
-                            left: [streak.leftFrom, streak.leftTo],
-                            rotate: streak.shape === 'square' ? [streak.angle, streak.angle + 360] : streak.angle
+                        animate={{
+                            opacity: [0.1, 0.8, 0.1],
+                            y: [0, -45, 0],
+                            x: [0, Math.sin(particle.id) * 15, 0],
                         }}
                         transition={{
-                            duration: streak.duration,
+                            duration: particle.duration,
                             repeat: Infinity,
-                            delay: streak.delay,
-                            ease: "easeInOut"
+                            delay: particle.delay,
+                            ease: "easeInOut",
                         }}
                     />
                 ))}
+            </div>
+
+            {/* Orbiting Neon Rings */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center">
+                <div className="relative w-full h-full max-w-6xl mx-auto flex items-center justify-center">
+                    {orbitRings.map(ring => (
+                        <motion.div
+                            key={ring.id}
+                            className="absolute rounded-full border border-dashed"
+                            style={{
+                                width: ring.size,
+                                height: ring.size,
+                                borderColor: ring.color,
+                                boxShadow: `0 0 20px ${ring.color}`,
+                            }}
+                            animate={{
+                                rotate: ring.clockwise ? [0, 360] : [360, 0],
+                                scale: [1, 1.05, 1],
+                            }}
+                            transition={{
+                                rotate: {
+                                    duration: ring.duration,
+                                    repeat: Infinity,
+                                    ease: "linear",
+                                },
+                                scale: {
+                                    duration: 12 + ring.id * 2,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                }
+                            }}
+                        />
+                    ))}
+                </div>
             </div>
             
             {/* Neo-brutalist Interactive Floating Nodes (similar to reference web canvas but unique) */}
