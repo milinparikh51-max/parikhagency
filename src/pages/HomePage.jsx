@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useStore } from '../context/StoreContext';
 import { motion } from 'framer-motion';
 import { ArrowRight, PenTool, Coffee, Shirt, Sparkles } from 'lucide-react';
 
 const HomePage = () => {
     const navigate = useNavigate();
+    const { trackClick } = useStore();
 
     // Floating particles config for animated background nodes
     const floatingNodes = [
@@ -179,13 +181,19 @@ const HomePage = () => {
                         className="flex flex-col sm:flex-row justify-center items-center gap-6 pt-6"
                     >
                         <button
-                            onClick={() => navigate('/products')}
+                            onClick={() => {
+                                trackClick('Home: Explore Collection');
+                                navigate('/products');
+                            }}
                             className="w-full sm:w-auto px-8 py-4 bg-[#7c3aed] text-white rounded-2xl font-black text-lg border-3 border-gray-950 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transform -rotate-[1.2deg] hover:rotate-0 hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all flex items-center justify-center gap-2 group cursor-pointer"
                         >
                             Explore Collection <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
                         <button
-                            onClick={() => navigate('/customise')}
+                            onClick={() => {
+                                trackClick('Home: Custom Design Studio');
+                                navigate('/customise');
+                            }}
                             className="w-full sm:w-auto px-8 py-4 bg-white text-gray-950 rounded-2xl font-black text-lg border-3 border-gray-950 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transform rotate-[1.5deg] hover:rotate-0 hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
                             Custom Design Studio ➜

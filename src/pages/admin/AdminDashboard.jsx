@@ -4,14 +4,17 @@ import { useStore } from '../../context/StoreContext';
 import { DollarSign, ShoppingBag, Users, TrendingUp } from 'lucide-react';
 
 const AdminDashboard = () => {
-    const { products, orders } = useStore();
+    const { products, orders, linkClicks, resetClicks } = useStore();
     const navigate = useNavigate();
 
     const totalRevenue = orders.reduce((acc, order) => acc + order.total, 0);
     const totalOrders = orders.length;
 
+    // Calculate sum of all link clicks to show as a header overview metric
+    const totalLinkClicks = Object.values(linkClicks || {}).reduce((a, b) => a + b, 0);
+
     return (
-        <div>
+        <div className="pb-12">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Dashboard Overview</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -19,7 +22,7 @@ const AdminDashboard = () => {
                     { label: "Total Revenue", value: `₹${totalRevenue.toLocaleString('en-IN')}`, icon: <DollarSign className="w-6 h-6 text-green-500" />, bg: "bg-green-50" },
                     { label: "Total Orders", value: totalOrders, icon: <ShoppingBag className="w-6 h-6 text-blue-500" />, bg: "bg-blue-50" },
                     { label: "Products", value: products.length, icon: <Users className="w-6 h-6 text-purple-500" />, bg: "bg-purple-50" },
-                    { label: "Growth", value: "+12.5%", icon: <TrendingUp className="w-6 h-6 text-orange-500" />, bg: "bg-orange-50" },
+                    { label: "Total Link Clicks", value: totalLinkClicks, icon: <TrendingUp className="w-6 h-6 text-orange-500" />, bg: "bg-orange-50" },
                 ].map((stat, idx) => (
                     <div key={idx} className="bg-white dark:bg-dark-card p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 flex items-center gap-4">
                         <div className={`p-3 rounded-lg ${stat.bg} dark:bg-gray-800`}>
@@ -56,24 +59,56 @@ const AdminDashboard = () => {
                     )}
                 </div>
 
-                <div className="bg-white dark:bg-dark-card p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
-                    <h2 className="text-xl font-bold mb-4 dark:text-white">Quick Actions</h2>
-                    <div className="grid grid-cols-2 gap-4">
-                        <button
-                            onClick={() => navigate('/admin/products', { state: { openAddModal: true } })}
-                            className="p-4 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-semibold"
-                        >
-                            Add New Product
-                        </button>
-                        <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => navigate('/admin/orders')}
-                            className="p-4 bg-white border border-gray-200 text-gray-700 rounded-lg hover:shadow-lg transition-all font-semibold dark:bg-transparent dark:text-white dark:border-gray-700"
-                        >
-                            View Reports
-                        </motion.button>
+                <div className="bg-white dark:bg-dark-card p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col justify-between">
+                    <div>
+                        <h2 className="text-xl font-bold mb-4 dark:text-white">Quick Actions</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            <button
+                                onClick={() => navigate('/admin/products', { state: { openAddModal: true } })}
+                                className="p-4 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors font-semibold"
+                            >
+                                Add New Product
+                            </button>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => navigate('/admin/orders')}
+                                className="p-4 bg-white border border-gray-200 text-gray-700 rounded-lg hover:shadow-lg transition-all font-semibold dark:bg-transparent dark:text-white dark:border-gray-700"
+                            >
+                                View Reports
+                            </motion.button>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            {/* Link Click Analytics Panel */}
+            <div className="bg-white dark:bg-dark-card p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 mt-8">
+                <div className="flex justify-between items-center mb-6">
+                    <div className="flex items-center gap-2">
+                        <TrendingUp className="w-6 h-6 text-primary" />
+                        <h2 className="text-xl font-bold dark:text-white">Link Click Analytics</h2>
+                    </div>
+                    <button
+                        onClick={resetClicks}
+                        className="text-xs font-semibold bg-red-50 hover:bg-red-150 dark:bg-red-950/20 dark:hover:bg-red-950/40 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-lg border border-red-200 dark:border-red-900/30 transition-colors cursor-pointer"
+                    >
+                        Reset Counters
+                    </button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {Object.entries(linkClicks || {}).map(([linkName, clickCount]) => (
+                        <div key={linkName} className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800/80 flex justify-between items-center shadow-xs">
+                            <div>
+                                <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 block uppercase tracking-wider">{linkName}</span>
+                                <span className="text-2xl font-black text-gray-900 dark:text-white mt-1 block">{clickCount}</span>
+                            </div>
+                            <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary-light font-bold text-xs select-none">
+                                click
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

@@ -101,6 +101,82 @@ export const StoreProvider = ({ children }) => {
         setOrders(prev => prev.filter(o => o.id !== orderId));
     };
 
+    // --- Link Click Tracking State ---
+    const [linkClicks, setLinkClicks] = useState(() => {
+        try {
+            const localData = localStorage.getItem('parikh-link-clicks');
+            return localData ? JSON.parse(localData) : {
+                'Navbar: Home': 0,
+                'Navbar: Products': 0,
+                'Navbar: Customise': 0,
+                'Navbar: Logo': 0,
+                'Navbar: Cart': 0,
+                'Navbar: My Orders': 0,
+                'Home: Explore Collection': 0,
+                'Home: Custom Design Studio': 0,
+                'Footer: All Products': 0,
+                'Footer: Customise': 0,
+                'Footer: About': 0,
+                'Footer: Contact': 0,
+                'Footer: Instagram': 0,
+                'Footer: Phone': 0,
+                'Footer: Email': 0,
+                'Footer: Map Address': 0
+            };
+        } catch {
+            return {
+                'Navbar: Home': 0,
+                'Navbar: Products': 0,
+                'Navbar: Customise': 0,
+                'Navbar: Logo': 0,
+                'Navbar: Cart': 0,
+                'Navbar: My Orders': 0,
+                'Home: Explore Collection': 0,
+                'Home: Custom Design Studio': 0,
+                'Footer: All Products': 0,
+                'Footer: Customise': 0,
+                'Footer: About': 0,
+                'Footer: Contact': 0,
+                'Footer: Instagram': 0,
+                'Footer: Phone': 0,
+                'Footer: Email': 0,
+                'Footer: Map Address': 0
+            };
+        }
+    });
+
+    useEffect(() => {
+        localStorage.setItem('parikh-link-clicks', JSON.stringify(linkClicks));
+    }, [linkClicks]);
+
+    const trackClick = (linkKey) => {
+        setLinkClicks(prev => ({
+            ...prev,
+            [linkKey]: (prev[linkKey] || 0) + 1
+        }));
+    };
+
+    const resetClicks = () => {
+        setLinkClicks({
+            'Navbar: Home': 0,
+            'Navbar: Products': 0,
+            'Navbar: Customise': 0,
+            'Navbar: Logo': 0,
+            'Navbar: Cart': 0,
+            'Navbar: My Orders': 0,
+            'Home: Explore Collection': 0,
+            'Home: Custom Design Studio': 0,
+            'Footer: All Products': 0,
+            'Footer: Customise': 0,
+            'Footer: About': 0,
+            'Footer: Contact': 0,
+            'Footer: Instagram': 0,
+            'Footer: Phone': 0,
+            'Footer: Email': 0,
+            'Footer: Map Address': 0
+        });
+    };
+
     return (
         <StoreContext.Provider value={{
             products,
@@ -111,7 +187,10 @@ export const StoreProvider = ({ children }) => {
             placeOrder,
             updateOrderStatus,
             cancelOrder,
-            deleteOrder
+            deleteOrder,
+            linkClicks,
+            trackClick,
+            resetClicks
         }}>
             {children}
         </StoreContext.Provider>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import { useStore } from '../../context/StoreContext';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Menu, X, User, Search, Package } from 'lucide-react';
 
@@ -9,13 +10,14 @@ const Navbar = () => {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const { cartCount, setIsCartOpen } = useCart();
     const { user, logout } = useAuth();
+    const { trackClick } = useStore();
 
     return (
         <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 dark:bg-dark-bg/80 dark:border-dark-card transition-all duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
                     {/* Logo */}
-                    <Link to="/" className="flex-shrink-0 flex items-center">
+                    <Link to="/" onClick={() => trackClick('Navbar: Logo')} className="flex-shrink-0 flex items-center">
                         <span className="text-3xl font-bold font-sans tracking-tight text-gradient-brand">
                             PARIKH AGENCY<span className="text-accent">.</span>
                         </span>
@@ -23,13 +25,13 @@ const Navbar = () => {
 
                     {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link to="/" className="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white font-medium transition-colors">
+                        <Link to="/" onClick={() => trackClick('Navbar: Home')} className="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white font-medium transition-colors">
                             Home
                         </Link>
-                        <Link to="/products" className="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white font-medium transition-colors">
+                        <Link to="/products" onClick={() => trackClick('Navbar: Products')} className="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white font-medium transition-colors">
                             Products
                         </Link>
-                        <Link to="/customise" className="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white font-medium transition-colors">
+                        <Link to="/customise" onClick={() => trackClick('Navbar: Customise')} className="text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-white font-medium transition-colors">
                             Customise
                         </Link>
                     </div>
@@ -69,7 +71,10 @@ const Navbar = () => {
                                         <Link
                                             to="/my-orders"
                                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors flex items-center gap-2"
-                                            onClick={() => setIsUserMenuOpen(false)}
+                                            onClick={() => {
+                                                setIsUserMenuOpen(false);
+                                                trackClick('Navbar: My Orders');
+                                            }}
                                         >
                                             <Package className="w-4 h-4" />
                                             My Orders
@@ -93,7 +98,10 @@ const Navbar = () => {
                             </Link>
                         )}
 
-                        <button onClick={() => setIsCartOpen(true)} className="relative text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors">
+                        <button onClick={() => {
+                            setIsCartOpen(true);
+                            trackClick('Navbar: Cart');
+                        }} className="relative text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors">
                             <ShoppingCart className="w-5 h-5" />
                             {cartCount > 0 && (
                                 <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
@@ -105,7 +113,10 @@ const Navbar = () => {
 
                     {/* Mobile Controls */}
                     <div className="md:hidden flex items-center space-x-4">
-                        <button onClick={() => setIsCartOpen(true)} className="relative text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors">
+                        <button onClick={() => {
+                            setIsCartOpen(true);
+                            trackClick('Navbar: Cart');
+                        }} className="relative text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-white transition-colors">
                             <ShoppingCart className="w-5 h-5" />
                             {cartCount > 0 && (
                                 <span className="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center">
@@ -131,21 +142,30 @@ const Navbar = () => {
                         <div className="space-y-1">
                             <Link
                                 to="/"
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    trackClick('Navbar: Home');
+                                }}
                                 className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
                             >
                                 Home
                             </Link>
                             <Link
                                 to="/products"
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    trackClick('Navbar: Products');
+                                }}
                                 className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
                             >
                                 Products
                             </Link>
                             <Link
                                 to="/customise"
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    trackClick('Navbar: Customise');
+                                }}
                                 className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-dark-card rounded-md"
                             >
                                 Customise
@@ -190,7 +210,10 @@ const Navbar = () => {
                                         <Link
                                             to="/my-orders"
                                             className="block py-2 text-sm text-gray-700 dark:text-gray-300 hover:text-primary flex items-center gap-2"
-                                            onClick={() => setIsOpen(false)}
+                                            onClick={() => {
+                                                setIsOpen(false);
+                                                trackClick('Navbar: My Orders');
+                                            }}
                                         >
                                             <Package className="w-4 h-4" />
                                             My Orders
