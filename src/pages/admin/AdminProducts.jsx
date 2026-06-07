@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext';
 import { useLocation } from 'react-router-dom';
-import { Plus, Trash, Edit, Upload, X } from 'lucide-react';
+import { Plus, Trash, Edit, Upload, X, Save } from 'lucide-react';
 
 const AdminProducts = () => {
     const { products, addProduct, updateProduct, deleteProduct } = useStore();
@@ -76,6 +76,40 @@ const AdminProducts = () => {
             e.target.value = '';
         };
         reader.readAsText(file);
+    };
+
+    const handleExportCSV = () => {
+        if (products.length === 0) {
+            alert("No products to export!");
+            return;
+        }
+        let csvContent = "sr.no,product name,details,pricing\n";
+        products.forEach((p, index) => {
+            const name = `"${p.name.replace(/"/g, '""')}"`;
+            const desc = `"${(p.description || '').replace(/"/g, '""')}"`;
+            csvContent += `${index + 1},${name},${desc},${p.price}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "parikh_products.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleSaveToLocalStorage = () => {
+        try {
+            localStorage.setItem('parikh-products', JSON.stringify(products));
+            localStorage.setItem('parikh-products-initialized', 'true');
+            alert("All products saved successfully to browser database!");
+        } catch (error) {
+            console.error("Save failed:", error);
+            alert("Failed to save products: " + error.message);
+        }
     };
 
     const handleOpenModal = (productToEdit = null) => {
@@ -168,8 +202,22 @@ const AdminProducts = () => {
                     </button>
 
                     <button
+                        onClick={handleExportCSV}
+                        className="bg-[#00a896] text-white px-6 py-3 rounded-lg hover:bg-accent-hover transition-colors flex items-center gap-2 shadow-sm"
+                    >
+                        <Upload className="w-5 h-5 rotate-180" /> Export CSV
+                    </button>
+
+                    <button
+                        onClick={handleSaveToLocalStorage}
+                        className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm cursor-pointer"
+                    >
+                        <Save className="w-5 h-5" /> Save Changes
+                    </button>
+
+                    <button
                         onClick={() => handleOpenModal()}
-                        className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2"
+                        className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2 cursor-pointer"
                     >
                         <Plus className="w-5 h-5" /> Add Product
                     </button>

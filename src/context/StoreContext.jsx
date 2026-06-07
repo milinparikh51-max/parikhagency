@@ -65,6 +65,12 @@ export const StoreProvider = ({ children }) => {
                     return parsed;
                 }
             }
+            // Check if initialized flag exists. If yes, return empty catalog instead of initial products.
+            const hasInitialized = localStorage.getItem('parikh-products-initialized');
+            if (hasInitialized) {
+                return [];
+            }
+            localStorage.setItem('parikh-products-initialized', 'true');
             return INITIAL_PRODUCTS;
         } catch {
             return INITIAL_PRODUCTS;
@@ -73,10 +79,13 @@ export const StoreProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem('parikh-products', JSON.stringify(products));
+        if (products.length > 0) {
+            localStorage.setItem('parikh-products-initialized', 'true');
+        }
     }, [products]);
 
     const addProduct = (product) => {
-        setProducts(prev => [...prev, { ...product, id: Date.now() }]);
+        setProducts(prev => [...prev, { ...product, id: Date.now() + Math.random() }]);
     };
 
     const updateProduct = (id, updatedData) => {

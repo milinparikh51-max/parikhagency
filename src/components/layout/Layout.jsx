@@ -31,7 +31,7 @@ const Layout = () => {
     }, []);
 
     return (
-        <div className="min-h-screen flex flex-col bg-[#080710] text-white relative overflow-hidden">
+        <div className="min-h-screen flex flex-col bg-[#080710] text-white relative overflow-x-clip">
             
             {/* Click Ripple Effect */}
             <div className="fixed inset-0 pointer-events-none z-[99] overflow-hidden">
@@ -55,10 +55,14 @@ const Layout = () => {
             </div>
 
             {/* Global Animated Background Blobs */}
-            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-x-clip">
                 {/* Neon Blue Blur */}
                 <motion.div
-                    className="absolute -top-40 -left-40 w-96 h-96 bg-[#0066ff]/10 rounded-full blur-[120px]"
+                    className="absolute -top-40 -left-40 w-96 h-96"
+                    style={{
+                        background: 'radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, rgba(0, 102, 255, 0) 70%)',
+                        willChange: 'transform'
+                    }}
                     animate={{
                         x: [0, 60, 0],
                         y: [0, 80, 0]
@@ -71,7 +75,11 @@ const Layout = () => {
                 />
                 {/* Neon Purple Blur */}
                 <motion.div
-                    className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-[#7c3aed]/5 rounded-full blur-[150px]"
+                    className="absolute top-1/2 left-1/4 w-[500px] h-[500px]"
+                    style={{
+                        background: 'radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, rgba(124, 58, 237, 0) 70%)',
+                        willChange: 'transform'
+                    }}
                     animate={{
                         x: [0, -60, 0],
                         y: [0, 100, 0]
@@ -84,7 +92,11 @@ const Layout = () => {
                 />
                 {/* Neon Green Blur */}
                 <motion.div
-                    className="absolute -bottom-40 -right-40 w-96 h-96 bg-[#00ff87]/8 rounded-full blur-[120px]"
+                    className="absolute -bottom-40 -right-40 w-96 h-96"
+                    style={{
+                        background: 'radial-gradient(circle, rgba(0, 255, 135, 0.12) 0%, rgba(0, 255, 135, 0) 70%)',
+                        willChange: 'transform'
+                    }}
                     animate={{
                         x: [0, -80, 0],
                         y: [0, -50, 0]

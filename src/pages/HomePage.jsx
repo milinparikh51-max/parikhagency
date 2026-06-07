@@ -45,10 +45,10 @@ const HomePage = () => {
     ], []);
 
     return (
-        <div className="space-y-24 pb-24 bg-gradient-to-b from-[#080710] to-[#0f0e26] text-white min-h-screen overflow-hidden relative pt-12">
+        <div className="space-y-24 pb-24 bg-gradient-to-b from-[#080710] to-[#0f0e26] text-white min-h-screen overflow-x-clip relative pt-12">
             
             {/* Cyber Dust Twinkling Particles */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <div className="absolute inset-0 overflow-x-clip pointer-events-none z-0">
                 {cyberDust.map(particle => (
                     <motion.div
                         key={particle.id}
@@ -60,6 +60,7 @@ const HomePage = () => {
                             height: particle.size,
                             backgroundColor: particle.color,
                             boxShadow: `0 0 8px ${particle.color}`,
+                            willChange: 'transform, opacity'
                         }}
                         animate={{
                             opacity: [0.1, 0.8, 0.1],
@@ -77,7 +78,7 @@ const HomePage = () => {
             </div>
 
             {/* Orbiting Neon Rings */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center">
+            <div className="absolute inset-0 overflow-x-clip pointer-events-none z-0 flex items-center justify-center">
                 <div className="relative w-full h-full max-w-6xl mx-auto flex items-center justify-center">
                     {orbitRings.map(ring => (
                         <motion.div
@@ -88,6 +89,7 @@ const HomePage = () => {
                                 height: ring.size,
                                 borderColor: ring.color,
                                 boxShadow: `0 0 20px ${ring.color}`,
+                                willChange: 'transform'
                             }}
                             animate={{
                                 rotate: ring.clockwise ? [0, 360] : [360, 0],
