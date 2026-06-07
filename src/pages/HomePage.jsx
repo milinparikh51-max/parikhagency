@@ -229,16 +229,6 @@ const HomePage = () => {
                     <Star className="w-16 h-16 text-[#0066ff] fill-current drop-shadow-[0_0_15px_#0066ff]" />
                 </motion.div>
 
-                {/* Circle Sticker in Top Right (Gradients of Purple & Green) */}
-                <motion.div
-                    animate={{ y: [0, -12, 0], rotate: [12, 8, 12] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-24 right-12 w-28 h-28 bg-gradient-to-br from-[#7c3aed] to-[#00ff87] rounded-full border-3 border-gray-950 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hidden lg:flex items-center justify-center text-center p-3 transform rotate-[8deg]"
-                >
-                    <span className="text-gray-950 font-black text-xs uppercase tracking-tight leading-none">
-                        personal-<br/>isation
-                    </span>
-                </motion.div>
 
             </section>
 
