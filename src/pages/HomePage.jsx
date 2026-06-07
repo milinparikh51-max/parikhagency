@@ -157,10 +157,8 @@ const HomePage = () => {
                         <span className="inline-block transform rotate-[1.8deg] text-white hover:text-[#00ff87] hover:rotate-0 transition-all duration-250 cursor-default">
                             get custom.
                         </span>
-                        <span className="relative inline-block transform -rotate-[1.2deg] text-white hover:rotate-0 transition-all duration-250 cursor-default px-4">
-                            {/* Half box of deep cherry red #7F1425 */}
-                            <span className="absolute bottom-1.5 left-0 right-0 h-[45%] bg-[#7F1425] z-0 shadow-[0_0_15px_rgba(127,20,37,0.8)] rounded-xs"></span>
-                            <span className="relative z-10">get noticed.</span>
+                        <span className="inline-block transform -rotate-[1.2deg] text-white hover:rotate-0 transition-all duration-250 cursor-default">
+                            get noticed.
                         </span>
                     </motion.h1>
 
