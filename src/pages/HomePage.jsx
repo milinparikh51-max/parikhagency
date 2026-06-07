@@ -22,16 +22,20 @@ const HomePage = () => {
         { id: 6, x: "90%", y: "50%", delay: 2.5, color: "#0066ff" }
     ];
 
-    const cyberDust = React.useMemo(() => {
-        return Array.from({ length: 30 }).map((_, i) => ({
-            id: i,
-            size: Math.random() * 3 + 1,
-            x: `${Math.random() * 100}%`,
-            y: `${Math.random() * 100}%`,
-            delay: Math.random() * 5,
-            duration: Math.random() * 8 + 8,
-            color: ['#0066ff', '#00ff87', '#7c3aed', '#ffd700'][i % 4]
-        }));
+    const [cyberDust, setCyberDust] = React.useState([]);
+
+    React.useEffect(() => {
+        setCyberDust(
+            Array.from({ length: 30 }).map((_, i) => ({
+                id: i,
+                size: Math.random() * 3 + 1,
+                x: `${Math.random() * 100}%`,
+                y: `${Math.random() * 100}%`,
+                delay: Math.random() * 5,
+                duration: Math.random() * 8 + 8,
+                color: ['#0066ff', '#00ff87', '#7c3aed', '#ffd700'][i % 4]
+            }))
+        );
     }, []);
 
     const orbitRings = React.useMemo(() => [

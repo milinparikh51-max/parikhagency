@@ -9,7 +9,13 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
         try {
             const storedUser = localStorage.getItem('user');
-            return storedUser ? JSON.parse(storedUser) : null;
+            if (storedUser) {
+                const parsed = JSON.parse(storedUser);
+                if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                    return parsed;
+                }
+            }
+            return null;
         } catch {
             return null;
         }

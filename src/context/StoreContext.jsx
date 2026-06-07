@@ -34,12 +34,38 @@ const INITIAL_PRODUCTS = [
     }
 ];
 
+const DEFAULT_LINK_CLICKS = {
+    'Main URL Visits (Homepage Loads)': 0,
+    'Navbar: Home': 0,
+    'Navbar: Products': 0,
+    'Navbar: Customise': 0,
+    'Navbar: Logo': 0,
+    'Navbar: Cart': 0,
+    'Navbar: My Orders': 0,
+    'Home: Explore Collection': 0,
+    'Home: Custom Design Studio': 0,
+    'Footer: All Products': 0,
+    'Footer: Customise': 0,
+    'Footer: About': 0,
+    'Footer: Contact': 0,
+    'Footer: Instagram': 0,
+    'Footer: Phone': 0,
+    'Footer: Email': 0,
+    'Footer: Map Address': 0
+};
+
 export const StoreProvider = ({ children }) => {
     // --- Products State ---
     const [products, setProducts] = useState(() => {
         try {
             const localData = localStorage.getItem('parikh-products');
-            return localData ? JSON.parse(localData) : INITIAL_PRODUCTS;
+            if (localData) {
+                const parsed = JSON.parse(localData);
+                if (Array.isArray(parsed)) {
+                    return parsed;
+                }
+            }
+            return INITIAL_PRODUCTS;
         } catch {
             return INITIAL_PRODUCTS;
         }
@@ -65,7 +91,13 @@ export const StoreProvider = ({ children }) => {
     const [orders, setOrders] = useState(() => {
         try {
             const localData = localStorage.getItem('parikh-orders');
-            return localData ? JSON.parse(localData) : [];
+            if (localData) {
+                const parsed = JSON.parse(localData);
+                if (Array.isArray(parsed)) {
+                    return parsed;
+                }
+            }
+            return [];
         } catch {
             return [];
         }
@@ -105,45 +137,21 @@ export const StoreProvider = ({ children }) => {
     const [linkClicks, setLinkClicks] = useState(() => {
         try {
             const localData = localStorage.getItem('parikh-link-clicks');
-            return localData ? JSON.parse(localData) : {
-                'Main URL Visits (Homepage Loads)': 0,
-                'Navbar: Home': 0,
-                'Navbar: Products': 0,
-                'Navbar: Customise': 0,
-                'Navbar: Logo': 0,
-                'Navbar: Cart': 0,
-                'Navbar: My Orders': 0,
-                'Home: Explore Collection': 0,
-                'Home: Custom Design Studio': 0,
-                'Footer: All Products': 0,
-                'Footer: Customise': 0,
-                'Footer: About': 0,
-                'Footer: Contact': 0,
-                'Footer: Instagram': 0,
-                'Footer: Phone': 0,
-                'Footer: Email': 0,
-                'Footer: Map Address': 0
-            };
+            if (localData) {
+                const parsed = JSON.parse(localData);
+                if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                    const merged = { ...DEFAULT_LINK_CLICKS };
+                    for (const key in DEFAULT_LINK_CLICKS) {
+                        if (typeof parsed[key] === 'number') {
+                            merged[key] = parsed[key];
+                        }
+                    }
+                    return merged;
+                }
+            }
+            return DEFAULT_LINK_CLICKS;
         } catch {
-            return {
-                'Main URL Visits (Homepage Loads)': 0,
-                'Navbar: Home': 0,
-                'Navbar: Products': 0,
-                'Navbar: Customise': 0,
-                'Navbar: Logo': 0,
-                'Navbar: Cart': 0,
-                'Navbar: My Orders': 0,
-                'Home: Explore Collection': 0,
-                'Home: Custom Design Studio': 0,
-                'Footer: All Products': 0,
-                'Footer: Customise': 0,
-                'Footer: About': 0,
-                'Footer: Contact': 0,
-                'Footer: Instagram': 0,
-                'Footer: Phone': 0,
-                'Footer: Email': 0,
-                'Footer: Map Address': 0
-            };
+            return DEFAULT_LINK_CLICKS;
         }
     });
 
@@ -152,32 +160,17 @@ export const StoreProvider = ({ children }) => {
     }, [linkClicks]);
 
     const trackClick = (linkKey) => {
-        setLinkClicks(prev => ({
-            ...prev,
-            [linkKey]: (prev[linkKey] || 0) + 1
-        }));
+        setLinkClicks(prev => {
+            const safePrev = (prev && typeof prev === 'object' && !Array.isArray(prev)) ? prev : DEFAULT_LINK_CLICKS;
+            return {
+                ...safePrev,
+                [linkKey]: (Number(safePrev[linkKey]) || 0) + 1
+            };
+        });
     };
 
     const resetClicks = () => {
-        setLinkClicks({
-            'Main URL Visits (Homepage Loads)': 0,
-            'Navbar: Home': 0,
-            'Navbar: Products': 0,
-            'Navbar: Customise': 0,
-            'Navbar: Logo': 0,
-            'Navbar: Cart': 0,
-            'Navbar: My Orders': 0,
-            'Home: Explore Collection': 0,
-            'Home: Custom Design Studio': 0,
-            'Footer: All Products': 0,
-            'Footer: Customise': 0,
-            'Footer: About': 0,
-            'Footer: Contact': 0,
-            'Footer: Instagram': 0,
-            'Footer: Phone': 0,
-            'Footer: Email': 0,
-            'Footer: Map Address': 0
-        });
+        setLinkClicks(DEFAULT_LINK_CLICKS);
     };
 
     return (

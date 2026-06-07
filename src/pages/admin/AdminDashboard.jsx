@@ -11,7 +11,7 @@ const AdminDashboard = () => {
     const totalOrders = orders.length;
 
     // Calculate sum of all link clicks to show as a header overview metric
-    const totalLinkClicks = Object.values(linkClicks || {}).reduce((a, b) => a + b, 0);
+    const totalLinkClicks = Object.values(linkClicks || {}).reduce((a, b) => a + (Number(b) || 0), 0);
 
     return (
         <div className="pb-12">
