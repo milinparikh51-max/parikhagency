@@ -81,7 +81,9 @@ const HomePage = () => {
                             }}
                             animate={{
                                 rotate: ring.clockwise ? [0, 360] : [360, 0],
-                                scale: [1, 1.05, 1],
+                                scale: [1, 1.08, 0.95, 1],
+                                x: [0, 15, -15, 0],
+                                y: [0, -20, 20, 0],
                             }}
                             transition={{
                                 rotate: {
@@ -90,7 +92,17 @@ const HomePage = () => {
                                     ease: "linear",
                                 },
                                 scale: {
-                                    duration: 12 + ring.id * 2,
+                                    duration: 10 + ring.id * 3,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                },
+                                x: {
+                                    duration: 8 + ring.id * 4,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                },
+                                y: {
+                                    duration: 11 + ring.id * 3,
                                     repeat: Infinity,
                                     ease: "easeInOut",
                                 }
@@ -248,14 +260,7 @@ const HomePage = () => {
 
                 </div>
 
-                {/* Star Sticker in Bottom Left (Brutalist decorative node) */}
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                    className="absolute bottom-10 left-10 hidden lg:block"
-                >
-                    <Star className="w-16 h-16 text-[#0066ff] fill-current drop-shadow-[0_0_15px_#0066ff]" />
-                </motion.div>
+
 
 
             </section>
