@@ -37,7 +37,7 @@
 }
 
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply bg-slate-50 text-slate-900 dark:bg-[#080710] dark:text-white antialiased;
 }
 
 .cyber-grid-animate {

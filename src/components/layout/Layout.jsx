@@ -55,7 +55,7 @@ const Layout = () => {
             </div>
 
             {/* Global Animated Background Blobs */}
-            <div className="absolute inset-0 pointer-events-none z-0 overflow-x-clip">
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
                 {/* Neon Blue Blur */}
                 <motion.div
                     className="absolute -top-40 -left-40 w-96 h-96"
