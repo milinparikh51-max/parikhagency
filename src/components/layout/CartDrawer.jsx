@@ -110,7 +110,7 @@ const CartDrawer = () => {
                                 )}
                             </div>
 
-                            <div className="p-6 border-t border-gray-100 dark:border-dark-card bg-gray-50 dark:bg-dark-card/50">
+                            <div className="p-6 border-t border-gray-100 dark:border-dark-card bg-gray-50 dark:bg-dark-card">
                                 <div className="flex justify-between mb-4 text-lg font-bold text-gray-900 dark:text-white">
                                     <span>Total</span>
                                     <span>₹{cartTotal.toLocaleString('en-IN')}</span>

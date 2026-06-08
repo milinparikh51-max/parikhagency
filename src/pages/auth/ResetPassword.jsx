@@ -55,7 +55,7 @@ const ResetPassword = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="max-w-md w-full space-y-8 bg-white/80 dark:bg-dark-card/90 backdrop-blur-lg p-8 rounded-2xl shadow-xl border border-white/50 dark:border-gray-700 relative z-10"
+                className="max-w-md w-full space-y-8 bg-white/80 dark:bg-dark-card backdrop-blur-lg p-8 rounded-2xl shadow-xl border border-white/50 dark:border-gray-700 relative z-10"
             >
                 <div>
                     <button

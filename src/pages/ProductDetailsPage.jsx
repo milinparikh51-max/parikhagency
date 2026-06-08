@@ -125,7 +125,7 @@ const ProductDetailsPage = () => {
                     </div>
 
                     {/* Customization (Optional) */}
-                    <div className="p-4 bg-gray-50 dark:bg-dark-card/50 rounded-xl border border-gray-100 dark:border-700">
+                    <div className="p-4 bg-gray-50 dark:bg-dark-card rounded-xl border border-gray-100 dark:border-gray-800">
                         <h3 className="font-bold mb-3 dark:text-white">Customization Options</h3>
                         <div className="space-y-3">
                             <div>

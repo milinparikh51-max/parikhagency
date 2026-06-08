@@ -80,7 +80,7 @@ const MyOrdersPage = () => {
                     {myOrders.map((order, index) => (
                         <div key={order.id || index} className="bg-white dark:bg-dark-card rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                             {/* Order Header */}
-                            <div className="bg-gray-50 dark:bg-dark-card/50 px-6 py-4 flex flex-wrap gap-4 justify-between items-center border-b border-gray-100 dark:border-gray-700">
+                            <div className="bg-gray-50 dark:bg-dark-card px-6 py-4 flex flex-wrap gap-4 justify-between items-center border-b border-gray-100 dark:border-gray-700">
                                 <div className="space-y-1">
                                     <p className="text-sm text-gray-500 dark:text-gray-400">Order ID</p>
                                     <p className="font-mono font-medium text-gray-900 dark:text-white">{order.id}</p>
