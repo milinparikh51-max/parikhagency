@@ -22,14 +22,18 @@ const ProductCard = ({ product }) => {
                 />
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                     <button
-                        onClick={() => addToCart(product)}
-                        className="p-3 bg-white text-gray-955 rounded-full hover:bg-[#7c3aed] hover:text-white transition-all transform hover:scale-110 shadow-md"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            addToCart(product);
+                        }}
+                        className="p-3 bg-white text-gray-900 rounded-full hover:bg-[#7c3aed] hover:text-white transition-all transform hover:scale-110 shadow-md"
                     >
                         <ShoppingCart className="w-5 h-5" />
                     </button>
                     <Link
                         to={`/products/${product.id}`}
-                        className="p-3 bg-white text-gray-955 rounded-full hover:bg-[#00ff87] hover:text-gray-950 transition-all transform hover:scale-110 shadow-md"
+                        onClick={(e) => e.stopPropagation()}
+                        className="p-3 bg-white text-gray-900 rounded-full hover:bg-[#00ff87] hover:text-gray-950 transition-all transform hover:scale-110 shadow-md"
                     >
                         <Eye className="w-5 h-5" />
                     </Link>
