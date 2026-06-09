@@ -22,8 +22,11 @@ const CustomisePage = () => {
     const { products } = useStore();
     const fileInputRef = useRef(null);
 
-    // Default to first product if available, else null
-    const [selectedProduct, setSelectedProduct] = useState(products.length > 0 ? products[0] : null);
+    // Filter out products that cannot be customized
+    const customizableProducts = products.filter(p => p.customisable !== 'can not customised');
+
+    // Default to first customizable product if available, else null
+    const [selectedProduct, setSelectedProduct] = useState(customizableProducts.length > 0 ? customizableProducts[0] : null);
     const [customText, setCustomText] = useState("");
     const [customImage, setCustomImage] = useState(null);
     const [selectedFont, setSelectedFont] = useState(FONTS[0].value);
@@ -145,7 +148,7 @@ const CustomisePage = () => {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Select Product</label>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-h-60 overflow-y-auto pr-2">
-                            {products.map((prod) => (
+                            {customizableProducts.map((prod) => (
                                 <button
                                     key={prod.id}
                                     onClick={() => {

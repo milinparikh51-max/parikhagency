@@ -15,6 +15,7 @@ const AdminProducts = () => {
         category: 'Pens',
         price: '',
         mrp: '',
+        customisable: 'can customise',
         description: '',
         image: '',
         images: []
@@ -66,6 +67,7 @@ const AdminProducts = () => {
                             category,
                             price: priceVal,
                             mrp: mrpVal,
+                            customisable: 'can customise',
                             description: details || '',
                             image: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=800&q=80', // Default placeholder
                             images: ['https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=800&q=80'],
@@ -127,13 +129,23 @@ const AdminProducts = () => {
                 category: productToEdit.category,
                 price: productToEdit.price,
                 mrp: productToEdit.mrp || productToEdit.price,
+                customisable: productToEdit.customisable || 'can customise',
                 description: productToEdit.description || '',
                 image: productToEdit.image,
                 images: productToEdit.images || (productToEdit.image ? [productToEdit.image] : [])
             });
         } else {
             setEditingId(null);
-            setNewItem({ name: '', category: 'Pens', price: '', mrp: '', description: '', image: '', images: [] });
+            setNewItem({ 
+                name: '', 
+                category: 'Pens', 
+                price: '', 
+                mrp: '', 
+                customisable: 'can customise', 
+                description: '', 
+                image: '', 
+                images: [] 
+            });
         }
         setIsModalOpen(true);
     };
@@ -213,7 +225,7 @@ const AdminProducts = () => {
         }
 
         setIsModalOpen(false);
-        setNewItem({ name: '', category: 'Pens', price: '', mrp: '', description: '', image: '', images: [] });
+        setNewItem({ name: '', category: 'Pens', price: '', mrp: '', customisable: 'can customise', description: '', image: '', images: [] });
         setEditingId(null);
     };
 
@@ -282,7 +294,18 @@ const AdminProducts = () => {
                                     <img src={product.image} alt={product.name} className="w-12 h-12 rounded object-cover bg-gray-100" />
                                     <span className="font-medium text-gray-900 dark:text-white">{product.name}</span>
                                 </td>
-                                <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{product.category}</td>
+                                <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
+                                    <div className="flex flex-col">
+                                        <span className="font-medium">{product.category}</span>
+                                        <span className={`text-xs font-semibold mt-1 ${
+                                            product.customisable === 'can not customised' 
+                                                ? 'text-red-500' 
+                                                : 'text-green-500'
+                                        }`}>
+                                            {product.customisable === 'can not customised' ? 'Not Customisable' : 'Customisable'}
+                                        </span>
+                                    </div>
+                                </td>
                                 <td className="px-6 py-4">
                                     <div className="flex flex-col">
                                         <span className="font-bold text-[#00a896]">₹{product.price.toLocaleString('en-IN')}</span>
@@ -334,7 +357,7 @@ const AdminProducts = () => {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
                                     <select
@@ -345,6 +368,20 @@ const AdminProducts = () => {
                                         {["Pens", "Mugs", "Apparel", "Stationery", "Accessories"].map(c => <option key={c} value={c}>{c}</option>)}
                                     </select>
                                 </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Customisable</label>
+                                    <select
+                                        value={newItem.customisable}
+                                        onChange={e => setNewItem({ ...newItem, customisable: e.target.value })}
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600"
+                                    >
+                                        <option value="can customise">Can customise</option>
+                                        <option value="can not customised">Can not customise</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">MRP (₹)</label>
                                     <input

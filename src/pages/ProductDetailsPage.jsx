@@ -104,7 +104,17 @@ const ProductDetailsPage = () => {
                     className="space-y-6"
                 >
                     <div>
-                        <span className="text-sm text-primary font-bold uppercase tracking-wider">{product.category}</span>
+                        <div className="flex items-center gap-3">
+                            <span className="text-sm text-primary font-bold uppercase tracking-wider">{product.category}</span>
+                            <span className="text-gray-300">|</span>
+                            <span className={`text-xs font-black px-2.5 py-1 rounded-md border ${
+                                product.customisable === 'can not customised' 
+                                    ? 'bg-red-500/10 text-red-500 border-red-500/20' 
+                                    : 'bg-green-500/10 text-green-500 border-green-500/20'
+                            }`}>
+                                {product.customisable === 'can not customised' ? 'CANNOT CUSTOMISE' : 'CUSTOMISABLE'}
+                            </span>
+                        </div>
                         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mt-2 mb-4">{product.name}</h1>
                         <div className="flex items-center gap-4 mb-6">
                             <span className="text-3xl font-bold text-primary">₹{product.price.toLocaleString('en-IN')}</span>
@@ -158,21 +168,23 @@ const ProductDetailsPage = () => {
                     </div>
 
                     {/* Customization (Optional) */}
-                    <div className="p-4 bg-gray-50 dark:bg-dark-card rounded-xl border border-gray-100 dark:border-gray-800">
-                        <h3 className="font-bold mb-3 dark:text-white">Customization Options</h3>
-                        <div className="space-y-3">
-                            <div>
-                                <label className="text-sm text-gray-500 block mb-1">Custom Text / Name</label>
-                                <input
-                                    type="text"
-                                    placeholder="Enter text to print..."
-                                    value={customText}
-                                    onChange={(e) => setCustomText(e.target.value)}
-                                    className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 focus:outline-none focus:border-primary"
-                                />
+                    {product.customisable !== 'can not customised' && (
+                        <div className="p-4 bg-gray-50 dark:bg-dark-card rounded-xl border border-gray-100 dark:border-gray-800">
+                            <h3 className="font-bold mb-3 dark:text-white">Customization Options</h3>
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="text-sm text-gray-500 block mb-1">Custom Text / Name</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter text to print..."
+                                        value={customText}
+                                        onChange={(e) => setCustomText(e.target.value)}
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 focus:outline-none focus:border-primary"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="pt-4">
                         <button

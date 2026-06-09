@@ -16,6 +16,7 @@ const INITIAL_PRODUCTS = [
         image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
         images: ["https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80"],
         isNew: false,
+        customisable: 'can customise',
         description: "High-quality ceramic mug, perfect for customization."
     },
     {
@@ -27,6 +28,7 @@ const INITIAL_PRODUCTS = [
         image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80",
         images: ["https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80"],
         isNew: false,
+        customisable: 'can customise',
         description: "Professional leather-bound diary for the new year."
     },
     {
@@ -38,6 +40,7 @@ const INITIAL_PRODUCTS = [
         image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80",
         images: ["https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80"],
         isNew: false,
+        customisable: 'can customise',
         description: "Stylish adjustable cap for casual wear."
     }
 ];
