@@ -79,6 +79,7 @@ export const StoreProvider = ({ children }) => {
                     const normalized = parsed.map(p => ({
                         ...p,
                         mrp: typeof p.mrp === 'number' ? p.mrp : p.price,
+                        customisable: p.customisable || 'can customise',
                         images: p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : [])
                     }));
                     setProducts(normalized);
@@ -106,6 +107,7 @@ export const StoreProvider = ({ children }) => {
                     const normalized = data.map(p => ({
                         ...p,
                         mrp: typeof p.mrp === 'number' ? p.mrp : p.price,
+                        customisable: p.customisable || 'can customise',
                         images: p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : [])
                     }));
                     setProducts(normalized);

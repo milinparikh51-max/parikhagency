@@ -43,12 +43,12 @@ const AdminProducts = () => {
             const startIndex = hasHeader ? 1 : 0;
 
             for (let i = startIndex; i < lines.length; i++) {
-                // Column format: 0: Sr.No, 1: Name, 2: Details, 3: Pricing
+                // Column format: 0: Sr.No, 1: Name, 2: Details, 3: Pricing, 4: Offer, 5: Customisable
                 // Handle split carefully.
                 const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
 
                 if (cols.length >= 4) {
-                    const [srNo, name, details, pricing, maybeOffer] = cols;
+                    const [srNo, name, details, pricing, maybeOffer, maybeCustomisable] = cols;
 
                     if (name && pricing) {
                         // Auto-detect category based on name
@@ -62,12 +62,17 @@ const AdminProducts = () => {
                         const mrpVal = Number(pricing) || 0;
                         const priceVal = maybeOffer ? (Number(maybeOffer) || 0) : mrpVal;
 
+                        // Check customisable status from CSV
+                        const customisableVal = (maybeCustomisable && maybeCustomisable.toLowerCase().includes('not'))
+                            ? 'can not customised'
+                            : 'can customise';
+
                         addProduct({
                             name,
                             category,
                             price: priceVal,
                             mrp: mrpVal,
-                            customisable: 'can customise',
+                            customisable: customisableVal,
                             description: details || '',
                             image: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=800&q=80', // Default placeholder
                             images: ['https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=800&q=80'],
@@ -92,11 +97,12 @@ const AdminProducts = () => {
             alert("No products to export!");
             return;
         }
-        let csvContent = "sr.no,product name,details,mrp,offer price\n";
+        let csvContent = "sr.no,product name,details,mrp,offer price,customisable\n";
         products.forEach((p, index) => {
             const name = `"${p.name.replace(/"/g, '""')}"`;
             const desc = `"${(p.description || '').replace(/"/g, '""')}"`;
-            csvContent += `${index + 1},${name},${desc},${p.mrp || p.price},${p.price}\n`;
+            const cust = p.customisable || 'can customise';
+            csvContent += `${index + 1},${name},${desc},${p.mrp || p.price},${p.price},${cust}\n`;
         });
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
