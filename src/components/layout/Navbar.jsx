@@ -4,8 +4,9 @@ import { useAuth } from '../../context/AuthContext';
 import { useStore } from '../../context/StoreContext';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Menu, X, User, Search, Package } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const Navbar = () => {
+const Navbar = ({ showWelcome }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const { cartCount, setIsCartOpen } = useCart();
@@ -14,6 +15,33 @@ const Navbar = () => {
 
     return (
         <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 dark:bg-dark-bg/80 dark:border-dark-card transition-all duration-300">
+            {/* Owner Welcome Announcement Bar */}
+            <AnimatePresence>
+                {showWelcome && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                        className="overflow-hidden"
+                    >
+                        <div className="relative bg-[#0d0c1d] text-white text-xs md:text-sm font-black py-2.5 px-4 text-center tracking-widest flex items-center justify-center gap-2 select-none overflow-hidden uppercase">
+                            {/* Animated background glow */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#7c3aed]/10 via-[#0066ff]/10 to-[#00a896]/10 animate-pulse" />
+                            
+                            {/* Subtle bottom accent line */}
+                            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#7c3aed] via-[#0066ff] to-[#00a896]" />
+                            
+                            <span className="relative z-10 animate-bounce text-sm">✨</span>
+                            <span className="relative z-10 bg-gradient-to-r from-white via-blue-100 to-[#00ff87] bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(0,102,255,0.5)]">
+                                MILIN PARIKH welcomes you to PARIKH AGENCY
+                            </span>
+                            <span className="relative z-10 animate-bounce text-sm">✨</span>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
                     {/* Logo */}

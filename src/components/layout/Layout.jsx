@@ -15,6 +15,14 @@ const bgShapes = [
 
 const Layout = () => {
     const [ripples, setRipples] = React.useState([]);
+    const [showWelcome, setShowWelcome] = React.useState(true);
+
+    React.useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowWelcome(false);
+        }, 10000);
+        return () => clearTimeout(timer);
+    }, []);
 
     React.useEffect(() => {
         const handleGlobalClick = (e) => {
@@ -161,9 +169,9 @@ const Layout = () => {
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f1d36_1px,transparent_1px),linear-gradient(to_bottom,#1f1d36_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-[0.07] cyber-grid-animate" />
             </div>
 
-            <Navbar />
+            <Navbar showWelcome={showWelcome} />
             <CartDrawer />
-            <main className="flex-grow pt-20 relative z-10">
+            <main className={`flex-grow transition-all duration-500 relative z-10 ${showWelcome ? 'pt-[116px]' : 'pt-20'}`}>
                 <Outlet />
             </main>
             <Footer />

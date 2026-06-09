@@ -24,6 +24,20 @@ router.post('/', async (req, res) => {
     }
 });
 
+// UPDATE a product
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedProduct = await Product.findOneAndUpdate(
+            { id: req.params.id },
+            req.body,
+            { new: true }
+        );
+        res.json(updatedProduct);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
 // DELETE a product
 router.delete('/:id', async (req, res) => {
     try {

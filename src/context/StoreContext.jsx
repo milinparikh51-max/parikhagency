@@ -4,6 +4,8 @@ const StoreContext = createContext();
 
 export const useStore = () => useContext(StoreContext);
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const INITIAL_PRODUCTS = [
     {
         id: 2,
@@ -56,44 +58,115 @@ const DEFAULT_LINK_CLICKS = {
 
 export const StoreProvider = ({ children }) => {
     // --- Products State ---
-    const [products, setProducts] = useState(() => {
+    const [products, setProducts] = useState([]);
+    const [loadingProducts, setLoadingProducts] = useState(true);
+
+    const loadLocalProducts = () => {
         try {
             const localData = localStorage.getItem('parikh-products');
             if (localData) {
                 const parsed = JSON.parse(localData);
                 if (Array.isArray(parsed)) {
-                    return parsed;
+                    setProducts(parsed);
+                    return;
                 }
             }
-            // Check if initialized flag exists. If yes, return empty catalog instead of initial products.
             const hasInitialized = localStorage.getItem('parikh-products-initialized');
             if (hasInitialized) {
-                return [];
+                setProducts([]);
+                return;
             }
             localStorage.setItem('parikh-products-initialized', 'true');
-            return INITIAL_PRODUCTS;
+            setProducts(INITIAL_PRODUCTS);
         } catch {
-            return INITIAL_PRODUCTS;
+            setProducts(INITIAL_PRODUCTS);
         }
-    });
+    };
 
     useEffect(() => {
-        localStorage.setItem('parikh-products', JSON.stringify(products));
-        if (products.length > 0) {
-            localStorage.setItem('parikh-products-initialized', 'true');
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch(`${API_URL}/products`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setProducts(data);
+                    localStorage.setItem('parikh-products', JSON.stringify(data));
+                } else {
+                    console.warn("API response not ok, using localStorage fallback");
+                    loadLocalProducts();
+                }
+            } catch (error) {
+                console.warn("Could not connect to backend API, using localStorage fallback:", error);
+                loadLocalProducts();
+            } finally {
+                setLoadingProducts(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    const addProduct = async (product) => {
+        const newProduct = { ...product, id: Date.now() + Math.random() };
+        // Optimistic update
+        setProducts(prev => [...prev, newProduct]);
+        localStorage.setItem('parikh-products', JSON.stringify([...products, newProduct]));
+        
+        try {
+            const response = await fetch(`${API_URL}/products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newProduct)
+            });
+            if (response.ok) {
+                const savedProduct = await response.json();
+                setProducts(prev => {
+                    const updated = prev.map(p => p.id === newProduct.id ? savedProduct : p);
+                    localStorage.setItem('parikh-products', JSON.stringify(updated));
+                    return updated;
+                });
+            }
+        } catch (error) {
+            console.error("Error adding product to backend:", error);
         }
-    }, [products]);
-
-    const addProduct = (product) => {
-        setProducts(prev => [...prev, { ...product, id: Date.now() + Math.random() }]);
     };
 
-    const updateProduct = (id, updatedData) => {
-        setProducts(prev => prev.map(p => p.id === id ? { ...p, ...updatedData } : p));
+    const updateProduct = async (id, updatedData) => {
+        setProducts(prev => {
+            const updated = prev.map(p => p.id === id ? { ...p, ...updatedData } : p);
+            localStorage.setItem('parikh-products', JSON.stringify(updated));
+            return updated;
+        });
+
+        try {
+            await fetch(`${API_URL}/products/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData)
+            });
+        } catch (error) {
+            console.error("Error updating product in backend:", error);
+        }
     };
 
-    const deleteProduct = (id) => {
-        setProducts(prev => prev.filter(p => p.id !== id));
+    const deleteProduct = async (id) => {
+        setProducts(prev => {
+            const updated = prev.filter(p => p.id !== id);
+            localStorage.setItem('parikh-products', JSON.stringify(updated));
+            return updated;
+        });
+
+        try {
+            await fetch(`${API_URL}/products/${id}`, {
+                method: 'DELETE'
+            });
+        } catch (error) {
+            console.error("Error deleting product from backend:", error);
+        }
     };
 
     // --- Orders State ---
