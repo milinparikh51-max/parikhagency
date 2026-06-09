@@ -13,6 +13,32 @@ const Navbar = ({ showWelcome }) => {
     const { user, logout } = useAuth();
     const { trackClick } = useStore();
 
+    // Framer motion variants for typing/stagger effect
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.03,
+                delayChildren: 0.15,
+            }
+        }
+    };
+
+    const characterVariants = {
+        hidden: { opacity: 0, y: 8, scale: 0.8 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            transition: {
+                type: "spring",
+                damping: 10,
+                stiffness: 150,
+            }
+        }
+    };
+
     return (
         <nav className="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 dark:bg-dark-bg/80 dark:border-dark-card transition-all duration-300">
             {/* Owner Welcome Announcement Bar */}
@@ -25,18 +51,76 @@ const Navbar = ({ showWelcome }) => {
                         transition={{ duration: 0.5, ease: 'easeInOut' }}
                         className="overflow-hidden"
                     >
-                        <div className="relative bg-[#0d0c1d] text-white text-xs md:text-sm font-black py-2.5 px-4 text-center tracking-widest flex items-center justify-center gap-2 select-none overflow-hidden uppercase">
+                        <div className="relative bg-[#0d0c1d] text-white text-xs md:text-sm font-black py-2.5 px-4 text-center tracking-widest flex items-center justify-center gap-3 select-none overflow-hidden uppercase">
                             {/* Animated background glow */}
                             <div className="absolute inset-0 bg-gradient-to-r from-[#7c3aed]/10 via-[#0066ff]/10 to-[#00a896]/10 animate-pulse" />
                             
                             {/* Subtle bottom accent line */}
                             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#7c3aed] via-[#0066ff] to-[#00a896]" />
                             
-                            <span className="relative z-10 animate-bounce text-sm">✨</span>
-                            <span className="relative z-10 bg-gradient-to-r from-white via-blue-100 to-[#00ff87] bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(0,102,255,0.5)]">
-                                MILIN PARIKH welcomes you to PARIKH AGENCY
-                            </span>
-                            <span className="relative z-10 animate-bounce text-sm">✨</span>
+                            <motion.span
+                                animate={{ 
+                                    rotate: [0, 15, -15, 0],
+                                    scale: [1, 1.25, 1],
+                                }}
+                                transition={{ 
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                }}
+                                className="relative z-10 text-sm cursor-default"
+                            >
+                                ✨
+                            </motion.span>
+
+                            <motion.div 
+                                variants={containerVariants}
+                                initial="hidden"
+                                animate="visible"
+                                className="relative z-10 flex items-center justify-center flex-wrap gap-x-1.5"
+                            >
+                                {"MILIN PARIKH welcomes you to PARIKH AGENCY".split(" ").map((word, wordIndex) => (
+                                    <span key={wordIndex} className="inline-block whitespace-nowrap">
+                                        {Array.from(word).map((char, charIndex) => (
+                                            <motion.span
+                                                key={charIndex}
+                                                variants={characterVariants}
+                                                className="inline-block bg-gradient-to-r from-white via-blue-100 to-[#00ff87] bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(0,102,255,0.4)]"
+                                                animate={{
+                                                    textShadow: [
+                                                        "0 0 4px rgba(0, 102, 255, 0.4)",
+                                                        "0 0 12px rgba(124, 58, 237, 0.7)",
+                                                        "0 0 4px rgba(0, 102, 255, 0.4)"
+                                                    ]
+                                                }}
+                                                transition={{
+                                                    duration: 3,
+                                                    repeat: Infinity,
+                                                    ease: "easeInOut",
+                                                    delay: (wordIndex * 0.1) + (charIndex * 0.02)
+                                                }}
+                                            >
+                                                {char}
+                                            </motion.span>
+                                        ))}
+                                    </span>
+                                ))}
+                            </motion.div>
+
+                            <motion.span
+                                animate={{ 
+                                    rotate: [0, -15, 15, 0],
+                                    scale: [1, 1.25, 1],
+                                }}
+                                transition={{ 
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                }}
+                                className="relative z-10 text-sm cursor-default"
+                            >
+                                ✨
+                            </motion.span>
                         </div>
                     </motion.div>
                 )}
