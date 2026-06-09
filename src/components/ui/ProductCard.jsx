@@ -44,10 +44,15 @@ const ProductCard = ({ product }) => {
             <div className="p-6">
                 <p className="text-xs text-blue-400 font-bold uppercase tracking-wider mb-2">{product.category}</p>
                 <h3 className="text-lg font-black text-white mb-2 line-clamp-1">{product.name}</h3>
-                <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
                     <span className="text-xl font-black text-[#00a896]">
                         ₹{product.price.toLocaleString('en-IN')}
                     </span>
+                    {product.mrp && product.mrp > product.price && (
+                        <span className="text-xs text-gray-500 line-through">
+                            ₹{product.mrp.toLocaleString('en-IN')}
+                        </span>
+                    )}
                 </div>
             </div>
         </motion.div>

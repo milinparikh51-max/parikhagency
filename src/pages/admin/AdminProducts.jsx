@@ -14,8 +14,10 @@ const AdminProducts = () => {
         name: '',
         category: 'Pens',
         price: '',
+        mrp: '',
         description: '',
-        image: ''
+        image: '',
+        images: []
     });
 
     const fileInputRef = useRef(null);
@@ -45,7 +47,7 @@ const AdminProducts = () => {
                 const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
 
                 if (cols.length >= 4) {
-                    const [srNo, name, details, pricing] = cols;
+                    const [srNo, name, details, pricing, maybeOffer] = cols;
 
                     if (name && pricing) {
                         // Auto-detect category based on name
@@ -56,12 +58,17 @@ const AdminProducts = () => {
                         else if (lowerName.includes('diary') || lowerName.includes('notebook') || lowerName.includes('paper')) category = 'Stationery';
                         else if (lowerName.includes('bottle')) category = 'Accessories';
 
+                        const mrpVal = Number(pricing) || 0;
+                        const priceVal = maybeOffer ? (Number(maybeOffer) || 0) : mrpVal;
+
                         addProduct({
                             name,
                             category,
-                            price: Number(pricing) || 0,
+                            price: priceVal,
+                            mrp: mrpVal,
                             description: details || '',
                             image: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=800&q=80', // Default placeholder
+                            images: ['https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=800&q=80'],
                             isNew: true
                         });
                         addedCount++;
@@ -83,11 +90,11 @@ const AdminProducts = () => {
             alert("No products to export!");
             return;
         }
-        let csvContent = "sr.no,product name,details,pricing\n";
+        let csvContent = "sr.no,product name,details,mrp,offer price\n";
         products.forEach((p, index) => {
             const name = `"${p.name.replace(/"/g, '""')}"`;
             const desc = `"${(p.description || '').replace(/"/g, '""')}"`;
-            csvContent += `${index + 1},${name},${desc},${p.price}\n`;
+            csvContent += `${index + 1},${name},${desc},${p.mrp || p.price},${p.price}\n`;
         });
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -119,12 +126,14 @@ const AdminProducts = () => {
                 name: productToEdit.name,
                 category: productToEdit.category,
                 price: productToEdit.price,
+                mrp: productToEdit.mrp || productToEdit.price,
                 description: productToEdit.description || '',
-                image: productToEdit.image
+                image: productToEdit.image,
+                images: productToEdit.images || (productToEdit.image ? [productToEdit.image] : [])
             });
         } else {
             setEditingId(null);
-            setNewItem({ name: '', category: 'Pens', price: '', description: '', image: '' });
+            setNewItem({ name: '', category: 'Pens', price: '', mrp: '', description: '', image: '', images: [] });
         }
         setIsModalOpen(true);
     };
@@ -139,24 +148,42 @@ const AdminProducts = () => {
 
 
     const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setNewItem(prev => ({ ...prev, image: reader.result }));
-            };
-            reader.readAsDataURL(file);
-        }
+        const files = Array.from(e.target.files);
+        if (files.length === 0) return;
+
+        const promises = files.map(file => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    resolve(reader.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        Promise.all(promises).then(base64Images => {
+            setNewItem(prev => {
+                const updatedImages = [...(prev.images || []), ...base64Images];
+                const mainImage = prev.image || base64Images[0] || '';
+                return {
+                    ...prev,
+                    image: mainImage,
+                    images: updatedImages
+                };
+            });
+        });
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         let productImage = newItem.image;
+        let productImages = newItem.images || [];
+
         if (!productImage) {
             const categoryImages = {
                 Pens: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?w=800&q=80',
-                Mugs: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80',
+                Mugs: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80',
                 Apparel: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&q=80',
                 Stationery: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=800&q=80',
                 Accessories: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80'
@@ -164,10 +191,18 @@ const AdminProducts = () => {
             productImage = categoryImages[newItem.category] || categoryImages.Pens;
         }
 
+        if (productImages.length === 0) {
+            productImages = [productImage];
+        } else if (!productImages.includes(productImage)) {
+            productImages = [productImage, ...productImages.filter(img => img !== productImage)];
+        }
+
         const productData = {
             ...newItem,
             image: productImage,
+            images: productImages,
             price: Number(newItem.price),
+            mrp: Number(newItem.mrp) || Number(newItem.price),
             isNew: editingId ? newItem.isNew : true
         };
 
@@ -178,7 +213,7 @@ const AdminProducts = () => {
         }
 
         setIsModalOpen(false);
-        setNewItem({ name: '', category: 'Pens', price: '', description: '', image: '' });
+        setNewItem({ name: '', category: 'Pens', price: '', mrp: '', description: '', image: '', images: [] });
         setEditingId(null);
     };
 
@@ -248,7 +283,14 @@ const AdminProducts = () => {
                                     <span className="font-medium text-gray-900 dark:text-white">{product.name}</span>
                                 </td>
                                 <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{product.category}</td>
-                                <td className="px-6 py-4 font-bold text-primary">₹{product.price.toLocaleString('en-IN')}</td>
+                                <td className="px-6 py-4">
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-[#00a896]">₹{product.price.toLocaleString('en-IN')}</span>
+                                        {product.mrp && product.mrp > product.price && (
+                                            <span className="text-xs text-gray-400 line-through">₹{product.mrp.toLocaleString('en-IN')}</span>
+                                        )}
+                                    </div>
+                                </td>
                                 <td className="px-6 py-4">
                                     <button
                                         onClick={() => handleOpenModal(product)}
@@ -292,7 +334,7 @@ const AdminProducts = () => {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-3 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
                                     <select
@@ -304,7 +346,17 @@ const AdminProducts = () => {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">MRP (₹)</label>
+                                    <input
+                                        required
+                                        type="number"
+                                        value={newItem.mrp}
+                                        onChange={e => setNewItem({ ...newItem, mrp: e.target.value })}
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Offer Price (₹)</label>
                                     <input
                                         required
                                         type="number"
@@ -316,21 +368,70 @@ const AdminProducts = () => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Product Images</label>
+                                
+                                {newItem.images && newItem.images.length > 0 && (
+                                    <div className="grid grid-cols-3 gap-3 mb-4">
+                                        {newItem.images.map((imgUrl, index) => {
+                                            const isPrimary = newItem.image === imgUrl;
+                                            return (
+                                                <div key={index} className="relative group aspect-square rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-dark-bg flex items-center justify-center">
+                                                    <img src={imgUrl} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
+                                                    
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setNewItem(prev => ({ ...prev, image: imgUrl }))}
+                                                        className={`absolute top-1 left-1 px-2 py-0.5 text-xs font-bold rounded shadow-md transition-colors ${
+                                                            isPrimary 
+                                                                ? 'bg-primary text-white border border-primary' 
+                                                                : 'bg-white/90 text-gray-700 hover:bg-white border border-gray-300 dark:bg-gray-800/90 dark:text-white dark:hover:bg-gray-700 dark:border-gray-600'
+                                                        }`}
+                                                    >
+                                                        {isPrimary ? 'Primary' : 'Make Primary'}
+                                                    </button>
+                                                    
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setNewItem(prev => {
+                                                                const filtered = prev.images.filter((_, idx) => idx !== index);
+                                                                let mainImage = prev.image;
+                                                                if (mainImage === imgUrl) {
+                                                                    mainImage = filtered[0] || '';
+                                                                }
+                                                                return {
+                                                                    ...prev,
+                                                                    image: mainImage,
+                                                                    images: filtered
+                                                                };
+                                                            });
+                                                        }}
+                                                        className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full shadow-md hover:bg-red-700 transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                                    >
+                                                        <X className="w-3.5 h-3.5" />
+                                                    </button>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+                                
                                 <div
                                     onClick={() => fileInputRef.current?.click()}
-                                    className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-all text-center"
+                                    className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-all text-center bg-gray-50/50 dark:bg-dark-bg/50"
                                 >
-                                    {newItem.image ? (
-                                        <img src={newItem.image} alt="Preview" className="h-32 object-contain" />
-                                    ) : (
-                                        <>
-                                            <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                                            <span className="text-sm text-gray-500">Click to upload image</span>
-                                            <span className="text-xs text-gray-400 mt-1">(Leave empty for auto-generated category image)</span>
-                                        </>
-                                    )}
-                                    <input ref={fileInputRef} type="file" onChange={handleImageUpload} accept="image/*" className="hidden" />
+                                    <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Click to upload images</span>
+                                    <span className="text-xs text-gray-400 mt-1">You can select multiple images</span>
+                                    <span className="text-xs text-gray-400 mt-1">(Leave empty for auto-generated category image)</span>
+                                    <input 
+                                        ref={fileInputRef} 
+                                        type="file" 
+                                        onChange={handleImageUpload} 
+                                        accept="image/*" 
+                                        multiple 
+                                        className="hidden" 
+                                    />
                                 </div>
                             </div>
 

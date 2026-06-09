@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { useCart } from '../context/CartContext';
@@ -14,6 +14,17 @@ const ProductDetailsPage = () => {
     const loading = false; // Products are loaded synchronously from store currently
     const [customText, setCustomText] = useState("");
     const [selectedColor] = useState("Standard");
+    const [activeImage, setActiveImage] = useState("");
+
+    const productImages = product?.images && product.images.length > 0 
+        ? product.images 
+        : (product?.image ? [product.image] : []);
+
+    useEffect(() => {
+        if (product) {
+            setActiveImage(product.image || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80');
+        }
+    }, [id, product]);
 
 
     if (loading) return <div className="p-20 text-center">Loading...</div>;
@@ -48,22 +59,41 @@ const ProductDetailsPage = () => {
                 <Motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="bg-gray-50 dark:bg-dark-card rounded-2xl p-8 flex items-center justify-center relative"
+                    className="flex flex-col gap-4"
                 >
-                    <img
-                        src={product.image || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80'}
-                        alt={product.name}
-                        className="max-w-full max-h-[500px] object-contain drop-shadow-xl hover:scale-105 transition-transform duration-500"
-                    />
-                    {customText && (
-                        <Motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl font-serif text-gray-800 pointer-events-none drop-shadow-md mix-blend-multiply"
-                        >
-                            {customText}
-                            <span className="animate-pulse ml-0.5">|</span>
-                        </Motion.div>
+                    <div className="bg-gray-50 dark:bg-dark-card rounded-2xl p-8 flex items-center justify-center relative min-h-[400px]">
+                        <img
+                            src={activeImage || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80'}
+                            alt={product.name}
+                            className="max-w-full max-h-[400px] object-contain drop-shadow-xl hover:scale-105 transition-transform duration-500"
+                        />
+                        {customText && (
+                            <Motion.div
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl font-serif text-gray-800 pointer-events-none drop-shadow-md mix-blend-multiply"
+                            >
+                                {customText}
+                                <span className="animate-pulse ml-0.5">|</span>
+                            </Motion.div>
+                        )}
+                    </div>
+
+                    {/* Thumbnails */}
+                    {productImages.length > 1 && (
+                        <div className="flex gap-3 overflow-x-auto py-2">
+                            {productImages.map((img, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setActiveImage(img)}
+                                    className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 bg-white dark:bg-dark-card ${
+                                        activeImage === img ? 'border-primary' : 'border-transparent hover:border-gray-300 dark:hover:border-gray-700'
+                                    }`}
+                                >
+                                    <img src={img} alt={`${product.name} view ${idx + 1}`} className="w-full h-full object-cover" />
+                                </button>
+                            ))}
+                        </div>
                     )}
                 </Motion.div>
 
@@ -78,6 +108,9 @@ const ProductDetailsPage = () => {
                         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mt-2 mb-4">{product.name}</h1>
                         <div className="flex items-center gap-4 mb-6">
                             <span className="text-3xl font-bold text-primary">₹{product.price.toLocaleString('en-IN')}</span>
+                            {product.mrp && product.mrp > product.price && (
+                                <span className="text-xl line-through text-gray-500">₹{product.mrp.toLocaleString('en-IN')}</span>
+                            )}
                             <div className="flex items-center gap-1 text-yellow-400">
                                 <Star className="w-5 h-5 fill-current" />
                                 <Star className="w-5 h-5 fill-current" />

@@ -12,7 +12,9 @@ const INITIAL_PRODUCTS = [
         name: "Premium Ceramic Mug",
         category: "Mugs",
         price: 499,
+        mrp: 699,
         image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80",
+        images: ["https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&q=80"],
         isNew: false,
         description: "High-quality ceramic mug, perfect for customization."
     },
@@ -21,7 +23,9 @@ const INITIAL_PRODUCTS = [
         name: "Executive Diary 2026",
         category: "Stationery",
         price: 1500,
+        mrp: 1999,
         image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80",
+        images: ["https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80"],
         isNew: false,
         description: "Professional leather-bound diary for the new year."
     },
@@ -30,7 +34,9 @@ const INITIAL_PRODUCTS = [
         name: "Minimalist Cap",
         category: "Apparel",
         price: 399,
+        mrp: 599,
         image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80",
+        images: ["https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80"],
         isNew: false,
         description: "Stylish adjustable cap for casual wear."
     }
@@ -67,7 +73,12 @@ export const StoreProvider = ({ children }) => {
             if (localData) {
                 const parsed = JSON.parse(localData);
                 if (Array.isArray(parsed)) {
-                    setProducts(parsed);
+                    const normalized = parsed.map(p => ({
+                        ...p,
+                        mrp: typeof p.mrp === 'number' ? p.mrp : p.price,
+                        images: p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : [])
+                    }));
+                    setProducts(normalized);
                     return;
                 }
             }
@@ -89,8 +100,13 @@ export const StoreProvider = ({ children }) => {
                 const response = await fetch(`${API_URL}/products`);
                 if (response.ok) {
                     const data = await response.json();
-                    setProducts(data);
-                    localStorage.setItem('parikh-products', JSON.stringify(data));
+                    const normalized = data.map(p => ({
+                        ...p,
+                        mrp: typeof p.mrp === 'number' ? p.mrp : p.price,
+                        images: p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : [])
+                    }));
+                    setProducts(normalized);
+                    localStorage.setItem('parikh-products', JSON.stringify(normalized));
                 } else {
                     console.warn("API response not ok, using localStorage fallback");
                     loadLocalProducts();
