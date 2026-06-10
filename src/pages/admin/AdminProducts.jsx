@@ -3,6 +3,41 @@ import { useStore } from '../../context/StoreContext';
 import { useLocation } from 'react-router-dom';
 import { Plus, Trash, Edit, Upload, X, Save } from 'lucide-react';
 
+const generateDescription = (name, category) => {
+    if (!name.trim()) return "Please enter a product name first.";
+    
+    const categoryDescriptions = {
+        Pens: [
+            `Make a statement with the premium ${name}. Specially engineered for a smooth flow, smudge-free writing, and a comfortable grip. Excellent for daily professional work, exams, or as a high-quality personalized gift.`,
+            `The elegant ${name} features a refined design and superior writing performance. Crafted with a premium ink delivery system for clean, consistent lines. Perfect for journaling, office note-taking, and signing important documents.`
+        ],
+        Mugs: [
+            `Start your day right with the premium ${name}. Made from high-grade ceramic, it features a durable build and an ergonomic handle. Perfect for hot beverages, coffee, tea, and excellent for custom branding or personal gifts.`,
+            `Enjoy your favorite drinks in style with the ${name}. Crafted for both heat retention and a sleek feel. A beautiful choice for office desks, home kitchens, and custom personalized photo prints.`
+        ],
+        Apparel: [
+            `Wear your brand with confidence in the custom-crafted ${name}. Made with high-quality, breathable fabric that provides an athletic fit and long-lasting comfort. Durable print/embroidery area, perfect for team uniforms, promotional events, or casual daily wear.`,
+            `Stay comfortable and look premium in the ${name}. Tailored from soft, pre-shrunk cotton for maximum durability and print-friendly surface. Perfect for custom branding, events, and casual merchandise.`
+        ],
+        Stationery: [
+            `Organize your creative thoughts with the premium ${name}. Features high-quality, ink-bleed resistant pages and a durable, sleek cover design. Ideal for executive planning, sketching, journaling, or corporate gifting.`,
+            `The ${name} is designed for professionals and students alike. Built with acid-free paper for archival longevity. A perfect gift for note-takers, sketch artists, and planners.`
+        ],
+        Accessories: [
+            `Elevate your style and utility with the custom ${name}. Built with heavy-duty materials, this accessory combines style and functionality. Perfect for corporate promotional giveaways, branded merch, or personal utility.`,
+            `Designed for convenience and durability, the ${name} is the perfect companion for your daily activities. Sleek modern look, built to last, and highly customisable with your brand logo.`
+        ]
+    };
+
+    const templates = categoryDescriptions[category] || [
+        `Experience premium quality with this meticulously crafted ${name}. Designed for maximum comfort, utility, and durability. Ideal for personal use, branding, or as a thoughtful gift.`,
+        `The high-performance ${name} is built to deliver convenience and reliability. Highly customisable and excellent for personal use, gifting, and corporate promotions.`
+    ];
+
+    const randomIndex = Math.floor(Math.random() * templates.length);
+    return templates[randomIndex];
+};
+
 const AdminProducts = () => {
     const { products, addProduct, updateProduct, deleteProduct } = useStore();
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -408,6 +443,30 @@ const AdminProducts = () => {
                                         className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600"
                                     />
                                 </div>
+                            </div>
+
+                            <div>
+                                <div className="flex justify-between items-center mb-2">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Product Description</label>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const generated = generateDescription(newItem.name, newItem.category);
+                                            setNewItem(prev => ({ ...prev, description: generated }));
+                                        }}
+                                        className="text-xs font-black text-primary hover:text-primary-dark flex items-center gap-1 bg-primary/10 hover:bg-primary/20 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+                                    >
+                                        ✨ Auto-Generate Description
+                                    </button>
+                                </div>
+                                <textarea
+                                    required
+                                    rows="3"
+                                    value={newItem.description}
+                                    onChange={e => setNewItem({ ...newItem, description: e.target.value })}
+                                    className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 focus:outline-none focus:border-primary text-sm font-medium"
+                                    placeholder="Enter description or click auto-generate..."
+                                />
                             </div>
 
                             <div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import { motion } from 'framer-motion';
 import { ArrowRight, PenTool, Coffee, Shirt, Sparkles } from 'lucide-react';
+import StoreFrontSection from '../components/layout/StoreFrontSection';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -280,6 +281,8 @@ const HomePage = () => {
 
 
             </section>
+
+            <StoreFrontSection />
 
             {/* The Next Chapter section (customizable catalog) */}
             <motion.section 
