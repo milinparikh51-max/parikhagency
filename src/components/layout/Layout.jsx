@@ -175,6 +175,33 @@ const Layout = () => {
                 <Outlet />
             </main>
             <Footer />
+            
+            {/* Floating WhatsApp Button */}
+            <motion.a
+                href="https://wa.me/916357533557"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-[#25d366] to-[#128c7e] text-white rounded-full shadow-[0_0_20px_rgba(37,211,102,0.4)] hover:shadow-[0_0_35px_rgba(37,211,102,0.8)] border border-white/20 cursor-pointer group"
+            >
+                {/* Tooltip */}
+                <span className="absolute right-16 bg-[#131125] text-white text-xs font-black uppercase tracking-wider py-2 px-3.5 rounded-xl border border-white/10 shadow-xl opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap">
+                    Chat on WhatsApp 💬
+                </span>
+
+                {/* WhatsApp SVG Icon */}
+                <svg 
+                    className="w-7 h-7 fill-current transform group-hover:rotate-[12deg] transition-transform duration-300" 
+                    viewBox="0 0 24 24" 
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M12.012 2c-5.506 0-9.988 4.482-9.988 9.988 0 1.761.46 3.473 1.334 4.985l-1.422 5.196 5.316-1.395a9.923 9.923 0 0 0 4.76 1.213c.004 0 .008 0 .012 0 5.506 0 9.988-4.482 9.988-9.988C22 6.482 17.518 2 12.012 2zm6.012 14.195c-.247.697-1.422 1.282-1.956 1.341-.53.06-1.065.233-3.415-.694-2.825-1.116-4.607-3.992-4.748-4.18-.141-.188-1.144-1.522-1.144-2.906 0-1.385.706-2.066 1.024-2.408.318-.341.67-.428.894-.428.224 0 .447.001.64.008.204.007.478-.078.749.57.275.66.94 2.298 1.02 2.463.083.165.138.357.027.576-.11.22-.165.357-.33.549-.165.193-.346.43-.495.576-.165.163-.338.341-.146.67.193.33.856 1.408 1.833 2.28 1.261 1.127 2.32 1.474 2.65 1.639.33.165.523.138.72-.088.197-.227.856-1.001 1.084-1.348.228-.348.456-.29.77-.174.314.116 1.99.938 2.33 1.107.341.169.57.252.653.393.084.141.084.819-.163 1.516z"/>
+                </svg>
+            </motion.a>
         </div>
     );
 };
