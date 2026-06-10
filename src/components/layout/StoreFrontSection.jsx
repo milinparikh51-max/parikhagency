@@ -119,7 +119,7 @@ const StoreFrontSection = () => {
                                 className="inline-flex items-center gap-2 bg-[#7c3aed]/10 text-white font-black px-4 py-1.5 rounded-full text-xs border border-[#7c3aed]/30 uppercase tracking-widest"
                             >
                                 <Sparkles className="w-3.5 h-3.5 text-[#00ff87] animate-pulse" />
-                                <span>Established 2014</span>
+                                <span>Established 2000</span>
                             </motion.div>
 
                             {/* Bold Gen Z Heading with dual gradient shadows */}
@@ -144,7 +144,7 @@ const StoreFrontSection = () => {
                                 transition={{ delay: 0.3 }}
                                 className="text-base sm:text-lg text-gray-300 font-medium leading-relaxed max-w-xl"
                             >
-                                Serving creators with trust and premium vibes since 2014. Whether you're upgrading your desk aesthetic, prepping for exams, or building custom team merchandise — we bring you the ultimate vibe check in stationery.
+                                Serving creators with trust and premium vibes since 2000. Whether you're upgrading your desk aesthetic, prepping for exams, or building custom team merchandise — we bring you the ultimate vibe check in stationery.
                             </motion.p>
                         </div>
 
@@ -157,7 +157,7 @@ const StoreFrontSection = () => {
                             className="grid grid-cols-2 gap-4 pt-4"
                         >
                             <div className="p-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/5 hover:border-[#7c3aed]/30 transition-all duration-300">
-                                <h4 className="text-3xl font-black text-[#00ff87] mb-1">12+ Yrs</h4>
+                                <h4 className="text-3xl font-black text-[#00ff87] mb-1">25+ Yrs</h4>
                                 <p className="text-xs font-black uppercase text-gray-400 tracking-wider">Local Presence</p>
                             </div>
                             <div className="p-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/5 hover:border-[#00ff87]/30 transition-all duration-300">
