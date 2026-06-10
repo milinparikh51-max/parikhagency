@@ -56,9 +56,9 @@ const AboutPage = () => {
                         viewport={{ once: true }}
                         className="space-y-6"
                     >
-                        <h2 className="text-3xl font-black uppercase text-[#00ff87]">Over a Decade of Quality</h2>
+                        <h2 className="text-3xl font-black uppercase text-[#00ff87]">Our Heritage & Legacy</h2>
                         <p className="text-gray-300 font-medium leading-relaxed">
-                            Since <span className="text-white font-extrabold underline decoration-[#7c3aed] decoration-2">2014</span>, Parikh Agency has been a cornerstone of commercial printing and stationery services. For over a decade, we have provided high-quality books, diaries, brochures, office supplies, and corporate paper goods to businesses that value precision.
+                            While our local shop presence in Porbandar has been trusted by generations since <span className="text-white font-extrabold underline decoration-[#7c3aed] decoration-2">1979</span>, the Parikh Agency firm was established in <span className="text-white font-extrabold underline decoration-[#7c3aed] decoration-2">2014</span>. For over a decade, the agency has been a cornerstone of commercial printing and stationery services, providing high-quality books, diaries, brochures, office supplies, and corporate paper goods to businesses that value precision.
                         </p>
                         <p className="text-gray-300 font-medium leading-relaxed">
                             Our heritage is built on trust, impeccable craftsmanship, and a relentless commitment to our clients' presentation and identity.
@@ -78,7 +78,7 @@ const AboutPage = () => {
                             </div>
                             <div>
                                 <h4 className="text-lg font-extrabold uppercase text-white">Commercial Printing & Stationery</h4>
-                                <p className="text-xs text-gray-400 mt-1">Our founding foundation since 2014</p>
+                                <p className="text-xs text-gray-400 mt-1">Agency established in 2014 • Shop roots since 1979</p>
                             </div>
                         </div>
                         <ul className="space-y-3 text-sm text-gray-300 font-medium">
@@ -149,8 +149,8 @@ const AboutPage = () => {
                             <div className="mx-auto w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center text-green-400">
                                 <Award className="w-6 h-6" />
                             </div>
-                            <h4 className="font-extrabold uppercase">Decade of Legacy</h4>
-                            <p className="text-xs text-gray-400">Over a decade of delivering trust, precision printing, and premium paper stationery products.</p>
+                            <h4 className="font-extrabold uppercase">Decades of Trust</h4>
+                            <p className="text-xs text-gray-400">A local presence since 1979 combined with professional printing agency expertise established in 2014.</p>
                         </div>
                         <div className="bg-[#131125] p-6 rounded-xl border-2 border-gray-950 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-center space-y-4">
                             <div className="mx-auto w-12 h-12 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400">
