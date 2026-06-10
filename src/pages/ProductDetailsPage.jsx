@@ -140,20 +140,7 @@ const ProductDetailsPage = () => {
                             <Truck className="w-5 h-5 text-green-500" />
                             <span>Free Delivery on orders above ₹999</span>
                         </div>
-                        {['Stationery', 'Pens', 'Mugs', 'Apparel', 'Accessories'].includes(product.category) ? (
-                            <>
-                                <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-                                    <ShieldCheck className="w-5 h-5 text-red-500" />
-                                    <span className="line-through">1 Year Warranty Included</span>
-                                    <span className="text-red-500 font-semibold">(No Warranty/Guarantee on custom items)</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-                                    <RefreshCw className="w-5 h-5 text-red-500" />
-                                    <span className="line-through">30 Day Easy Returns</span>
-                                    <span className="text-red-500 font-semibold">(Customised products are non-returnable)</span>
-                                </div>
-                            </>
-                        ) : (
+                        {product.customisable === 'can not customised' && (
                             <>
                                 <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                                     <ShieldCheck className="w-5 h-5 text-blue-500" />

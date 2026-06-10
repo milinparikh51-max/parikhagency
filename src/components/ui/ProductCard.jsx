@@ -29,11 +29,6 @@ const ProductCard = ({ product }) => {
                                 NEW
                             </span>
                         )}
-                        {product.customisable === 'can not customised' && (
-                            <span className="bg-red-500 text-white text-xs font-black px-3 py-1 rounded-md border border-gray-950 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ml-auto">
-                                NO CUSTOMISATION
-                            </span>
-                        )}
                     </div>
                 </div>
 
