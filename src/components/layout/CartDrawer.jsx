@@ -25,14 +25,24 @@ const CartDrawer = () => {
     };
 
     const handlePaymentSuccess = (paymentDetails) => {
+        const isGujarat = user?.state?.toLowerCase().trim() === 'gujarat';
+        const shippingCharge = (user && !isGujarat) ? 99 : 0;
+        const finalTotal = cartTotal + shippingCharge;
+
         placeOrder(cart, {
             name: user?.name || "Guest User",
             email: user?.email || "guest@example.com",
             address: user ? `${user.address}, ${user.state || ''} - ${user.pincode || ''}` : "123 Main St, Mumbai",
-            phone: user?.phone || "No phone"
-        }, paymentDetails);
+            phone: user?.phone || "No phone",
+            shippingCharge,
+            subtotal: cartTotal,
+            total: finalTotal
+        }, {
+            ...paymentDetails,
+            amount: finalTotal
+        });
 
-        alert(`Order placed successfully! Total: ₹${cartTotal}`);
+        alert(`Order placed successfully! Total: ₹${finalTotal.toLocaleString('en-IN')}`);
         clearCart();
         setIsCartOpen(false);
         setIsPaymentModalOpen(false);
@@ -111,9 +121,31 @@ const CartDrawer = () => {
                             </div>
 
                             <div className="p-6 border-t border-gray-100 dark:border-dark-card bg-gray-50 dark:bg-dark-card">
-                                <div className="flex justify-between mb-4 text-lg font-bold text-gray-900 dark:text-white">
-                                    <span>Total</span>
-                                    <span>₹{cartTotal.toLocaleString('en-IN')}</span>
+                                <div className="space-y-2 mb-4">
+                                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                        <span>Subtotal</span>
+                                        <span>₹{cartTotal.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    {user ? (
+                                        <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                                            <span>Shipping</span>
+                                            {user.state?.toLowerCase().trim() === 'gujarat' ? (
+                                                <span className="text-green-500 font-bold">FREE (Gujarat)</span>
+                                            ) : (
+                                                <span>₹99 (Outside Gujarat)</span>
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <div className="text-xs text-orange-500 font-semibold bg-orange-500/10 p-2 rounded border border-orange-500/20">
+                                            🚚 Free delivery in Gujarat, ₹99 outside. Login to calculate shipping.
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between text-lg font-bold text-gray-900 dark:text-white border-t border-gray-100 dark:border-gray-800 pt-2">
+                                        <span>Total</span>
+                                        <span>
+                                            ₹{(cartTotal + ((user && user.state?.toLowerCase().trim() !== 'gujarat') ? 99 : 0)).toLocaleString('en-IN')}
+                                        </span>
+                                    </div>
                                 </div>
                                 <button
                                     disabled={cart.length === 0}
@@ -131,7 +163,7 @@ const CartDrawer = () => {
             <PaymentModal
                 isOpen={isPaymentModalOpen}
                 onClose={() => setIsPaymentModalOpen(false)}
-                totalAmount={cartTotal}
+                totalAmount={cartTotal + ((user && user.state?.toLowerCase().trim() !== 'gujarat') ? 99 : 0)}
                 onConfirmPayment={handlePaymentSuccess}
             />
         </>

@@ -218,7 +218,7 @@ export const StoreProvider = ({ children }) => {
             payment: paymentDetails,
             date: new Date().toISOString(),
             status: 'Pending',
-            total: cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+            total: customerDetails.total || cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
         };
         setOrders(prev => [newOrder, ...prev]);
         return newOrder;

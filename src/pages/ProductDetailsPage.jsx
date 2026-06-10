@@ -15,6 +15,31 @@ const ProductDetailsPage = () => {
     const [customText, setCustomText] = useState("");
     const [selectedColor] = useState("Standard");
     const [activeImage, setActiveImage] = useState("");
+    const [pincode, setPincode] = useState("");
+    const [deliveryStatus, setDeliveryStatus] = useState(null);
+
+    const checkDelivery = () => {
+        if (pincode.length !== 6 || isNaN(pincode)) {
+            setDeliveryStatus({
+                success: false,
+                message: "Please enter a valid 6-digit PIN code"
+            });
+            return;
+        }
+
+        const isGujarat = /^(36|37|38|39)/.test(pincode);
+        if (isGujarat) {
+            setDeliveryStatus({
+                success: true,
+                message: "Free Delivery available for Gujarat State!"
+            });
+        } else {
+            setDeliveryStatus({
+                success: true,
+                message: "Delivery available (₹99 shipping charges apply outside Gujarat)"
+            });
+        }
+    };
 
     const productImages = product?.images && product.images.length > 0 
         ? product.images 
@@ -135,23 +160,59 @@ const ProductDetailsPage = () => {
                         </p>
                     </div>
 
-                    <div className="border-t border-b border-gray-100 dark:border-gray-700 py-6 space-y-4">
-                        <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-                            <Truck className="w-5 h-5 text-green-500" />
-                            <span>Free Delivery on orders above ₹999</span>
+                    <div className="border-t border-b border-gray-100 dark:border-gray-700 py-6 space-y-6">
+                        <div>
+                            <h3 className="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3 flex items-center gap-2">
+                                <Truck className="w-5 h-5 text-blue-500" />
+                                Delivery Options
+                            </h3>
+                            
+                            <div className="flex gap-2 max-w-sm">
+                                <input
+                                    type="text"
+                                    maxLength="6"
+                                    placeholder="Enter pincode"
+                                    value={pincode}
+                                    onChange={(e) => {
+                                        const val = e.target.value.replace(/\D/g, '');
+                                        setPincode(val);
+                                        setDeliveryStatus(null);
+                                    }}
+                                    className="flex-grow px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-650 dark:border-gray-600 focus:outline-none focus:border-primary text-sm font-medium"
+                                />
+                                <button
+                                    onClick={checkDelivery}
+                                    className="px-5 py-2 bg-primary hover:bg-primary-dark text-white rounded-lg font-bold text-sm transition-colors cursor-pointer"
+                                >
+                                    Check
+                                </button>
+                            </div>
+                            
+                            {deliveryStatus ? (
+                                <div className="mt-3 text-sm font-semibold">
+                                    {deliveryStatus.success ? (
+                                        <div className="text-green-500 flex flex-col gap-0.5">
+                                            <span>✓ {deliveryStatus.message}</span>
+                                            <span className="text-xs text-gray-400 font-medium">Estimated Delivery: 3-5 Business Days</span>
+                                        </div>
+                                    ) : (
+                                        <div className="text-red-500">
+                                            ✗ {deliveryStatus.message}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                    Please enter PIN code to check delivery time & shipping charges
+                                </p>
+                            )}
                         </div>
-                        {product.customisable === 'can not customised' && (
-                            <>
-                                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-                                    <ShieldCheck className="w-5 h-5 text-blue-500" />
-                                    <span>1 Year Warranty Included</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-                                    <RefreshCw className="w-5 h-5 text-orange-500" />
-                                    <span>30 Day Easy Returns</span>
-                                </div>
-                            </>
-                        )}
+
+                        <div className="text-xs text-gray-500 dark:text-gray-400 font-semibold flex flex-col gap-2 pt-4 border-t border-gray-105 border-gray-100 dark:border-gray-800">
+                            <p className="flex items-center gap-1.5">🚚 Free delivery in Gujarat State.</p>
+                            <p className="flex items-center gap-1.5">💸 ₹99 delivery charge for orders outside Gujarat.</p>
+                            <p className="flex items-center gap-1.5">✨ 100% Original Products.</p>
+                        </div>
                     </div>
 
                     {/* Customization (Optional) */}
