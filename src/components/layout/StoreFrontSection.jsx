@@ -85,7 +85,7 @@ const StoreFrontSection = () => {
                                 {/* Live Store Location Tag */}
                                 <div className="absolute bottom-6 left-6 flex items-center gap-2.5 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-lg text-white">
                                     <MapPin className="w-4 h-4 text-[#00ff87] animate-bounce" />
-                                    <span className="text-xs font-black uppercase tracking-wider">Opp. BSNL Exchange, Porbandar</span>
+                                    <span className="text-xs font-black uppercase tracking-wider">Opp. Old Bata Shop, Near Dreamland Cinema, Porbandar</span>
                                 </div>
                             </div>
                         </motion.div>
