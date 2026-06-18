@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
@@ -25,77 +27,118 @@ export const AuthProvider = ({ children }) => {
 
 
     const login = async (email, password, type) => {
-        // Mock Login Logic
-        // In a real app, you'd hit an API endpoint.
+        try {
+            const response = await fetch(`${API_URL}/auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password, type })
+            });
 
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                if (type === 'admin') {
-                    // Check credentials (case-insensitive for username/email)
-                    const normalizedEmail = email.toLowerCase().trim();
-                    const isValidAdmin = (normalizedEmail === 'milinparikh80@gmail.com' || normalizedEmail === 'admin') && password === 'admin12';
+            if (response.ok) {
+                const loggedInUser = await response.json();
+                setUser(loggedInUser);
+                localStorage.setItem('user', JSON.stringify(loggedInUser));
+                return loggedInUser;
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Invalid credentials');
+            }
+        } catch (error) {
+            console.warn("Backend auth failed, trying localStorage fallback:", error);
+            
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (type === 'admin') {
+                        // Check credentials (case-insensitive for username/email)
+                        const normalizedEmail = email.toLowerCase().trim();
+                        const isValidAdmin = (normalizedEmail === 'milinparikh80@gmail.com' || normalizedEmail === 'admin') && password === 'admin12';
 
-                    if (isValidAdmin) {
-                        const adminUser = { id: 1, name: 'Milin Parikh', email: 'milinparikh80@gmail.com', role: 'admin' };
-                        setUser(adminUser);
-                        localStorage.setItem('user', JSON.stringify(adminUser));
-                        resolve(adminUser);
-                    } else {
-                        reject('Invalid admin credentials. Try "admin" and "admin12"');
-                    }
-                } else {
-                    // User login - check localStorage "users" database first
-                    const storedUsers = JSON.parse(localStorage.getItem('parikhagency_users') || '[]');
-                    const foundUser = storedUsers.find(u => u.email === email && u.password === password);
-
-                    if (foundUser) {
-                        const userObj = { ...foundUser, role: 'user' };
-                        setUser(userObj);
-                        localStorage.setItem('user', JSON.stringify(userObj));
-                        resolve(userObj);
-                    } else if (email === 'user@demo.com' && password === 'password') {
-                        // Fallback demo user
-                        const demoUser = { id: 2, name: 'Demo User', email, role: 'user' };
-                        setUser(demoUser);
-                        localStorage.setItem('user', JSON.stringify(demoUser));
-                        resolve(demoUser);
-                    } else {
-                        // Check if email exists but wrong password (for better error msg)
-                        const emailExists = storedUsers.some(u => u.email === email);
-                        if (emailExists) {
-                            reject('Incorrect password');
+                        if (isValidAdmin) {
+                            const adminUser = { id: 1, name: 'Milin Parikh', email: 'milinparikh80@gmail.com', role: 'admin' };
+                            setUser(adminUser);
+                            localStorage.setItem('user', JSON.stringify(adminUser));
+                            resolve(adminUser);
                         } else {
-                            reject('User not found. Please register.');
+                            reject('Invalid admin credentials. Try "admin" and "admin12"');
+                        }
+                    } else {
+                        // User login - check localStorage "users" database first
+                        const storedUsers = JSON.parse(localStorage.getItem('parikhagency_users') || '[]');
+                        const foundUser = storedUsers.find(u => u.email === email && u.password === password);
+
+                        if (foundUser) {
+                            const userObj = { ...foundUser, role: 'user' };
+                            setUser(userObj);
+                            localStorage.setItem('user', JSON.stringify(userObj));
+                            resolve(userObj);
+                        } else if (email === 'user@demo.com' && password === 'password') {
+                            // Fallback demo user
+                            const demoUser = { id: 2, name: 'Demo User', email, role: 'user' };
+                            setUser(demoUser);
+                            localStorage.setItem('user', JSON.stringify(demoUser));
+                            resolve(demoUser);
+                        } else {
+                            // Check if email exists but wrong password (for better error msg)
+                            const emailExists = storedUsers.some(u => u.email === email);
+                            if (emailExists) {
+                                reject('Incorrect password');
+                            } else {
+                                reject('User not found. Please register.');
+                            }
                         }
                     }
-                }
-            }, 800);
-        });
+                }, 800);
+            });
+        }
     };
 
     const register = async (userData) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                const storedUsers = JSON.parse(localStorage.getItem('parikhagency_users') || '[]');
+        try {
+            const response = await fetch(`${API_URL}/auth/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+            });
 
-                // Check if email already exists
-                if (storedUsers.some(u => u.email === userData.email)) {
-                    reject('Email already registered');
-                    return;
-                }
+            if (response.ok) {
+                const newUser = await response.json();
+                setUser(newUser);
+                localStorage.setItem('user', JSON.stringify(newUser));
+                return newUser;
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Registration failed');
+            }
+        } catch (error) {
+            console.warn("Backend registration failed, trying localStorage fallback:", error);
 
-                // Add new user
-                const newUser = { ...userData, id: Date.now() };
-                const updatedUsers = [...storedUsers, newUser];
-                localStorage.setItem('parikhagency_users', JSON.stringify(updatedUsers));
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const storedUsers = JSON.parse(localStorage.getItem('parikhagency_users') || '[]');
 
-                // Auto login after register
-                const userObj = { ...newUser, role: 'user' };
-                setUser(userObj);
-                localStorage.setItem('user', JSON.stringify(userObj));
-                resolve(userObj);
-            }, 800);
-        });
+                    // Check if email already exists
+                    if (storedUsers.some(u => u.email === userData.email)) {
+                        reject('Email already registered');
+                        return;
+                    }
+
+                    // Add new user
+                    const newUser = { ...userData, id: Date.now() };
+                    const updatedUsers = [...storedUsers, newUser];
+                    localStorage.setItem('parikhagency_users', JSON.stringify(updatedUsers));
+
+                    // Auto login after register
+                    const userObj = { ...newUser, role: 'user' };
+                    setUser(userObj);
+                    localStorage.setItem('user', JSON.stringify(userObj));
+                    resolve(userObj);
+                }, 800);
+            });
+        }
     };
 
     const logout = () => {

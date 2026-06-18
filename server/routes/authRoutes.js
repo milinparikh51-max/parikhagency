@@ -1,5 +1,5 @@
 import express from 'express';
-import User from '../models/User.js';
+import { userService } from '../services/userService.js';
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ router.post('/login', async (req, res) => {
     const { email, password, type } = req.body;
     try {
         // Find user by email
-        const user = await User.findOne({ email });
+        const user = await userService.findOne({ email });
 
         // Simple password check (Note: In real app, use bcrypt!)
         if (user && user.password === password) {
@@ -29,18 +29,15 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         // Check if user exists
-        const existingUser = await User.findOne({ email: req.body.email });
+        const existingUser = await userService.findOne({ email: req.body.email });
         if (existingUser) {
             return res.status(400).json({ message: "Email already registered" });
         }
 
-        const user = new User({
+        const newUser = await userService.create({
             ...req.body,
-            id: Date.now(), // Simple ID generation
             role: 'user'
         });
-
-        const newUser = await user.save();
         res.status(201).json(newUser);
     } catch (err) {
         res.status(400).json({ message: err.message });

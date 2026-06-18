@@ -1,13 +1,27 @@
 import express from 'express';
-import Product from '../models/Product.js';
+import { productService } from '../services/productService.js';
 
 const router = express.Router();
 
 // GET all products
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await productService.getAll();
         res.json(products);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// GET a single product by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const product = await productService.getById(req.params.id);
+        if (product) {
+            res.json(product);
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -15,9 +29,8 @@ router.get('/', async (req, res) => {
 
 // ADD a product
 router.post('/', async (req, res) => {
-    const product = new Product(req.body);
     try {
-        const newProduct = await product.save();
+        const newProduct = await productService.create(req.body);
         res.status(201).json(newProduct);
     } catch (err) {
         res.status(400).json({ message: err.message });
@@ -27,12 +40,12 @@ router.post('/', async (req, res) => {
 // UPDATE a product
 router.put('/:id', async (req, res) => {
     try {
-        const updatedProduct = await Product.findOneAndUpdate(
-            { id: req.params.id },
-            req.body,
-            { new: true }
-        );
-        res.json(updatedProduct);
+        const updatedProduct = await productService.update(req.params.id, req.body);
+        if (updatedProduct) {
+            res.json(updatedProduct);
+        } else {
+            res.status(404).json({ message: 'Product not found' });
+        }
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -41,8 +54,8 @@ router.put('/:id', async (req, res) => {
 // DELETE a product
 router.delete('/:id', async (req, res) => {
     try {
-        await Product.findOneAndDelete({ id: req.params.id });
-        res.json({ message: 'Product deleted' });
+        const result = await productService.delete(req.params.id);
+        res.json(result);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

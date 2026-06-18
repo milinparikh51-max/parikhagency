@@ -98,6 +98,22 @@ export const StoreProvider = ({ children }) => {
         }
     };
 
+    const loadLocalOrders = () => {
+        try {
+            const localData = localStorage.getItem('parikh-orders');
+            if (localData) {
+                const parsed = JSON.parse(localData);
+                if (Array.isArray(parsed)) {
+                    setOrders(parsed);
+                    return;
+                }
+            }
+            setOrders([]);
+        } catch {
+            setOrders([]);
+        }
+    };
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -124,7 +140,27 @@ export const StoreProvider = ({ children }) => {
             }
         };
 
+        const fetchOrders = async () => {
+            try {
+                const response = await fetch(`${API_URL}/orders`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setOrders(data);
+                    localStorage.setItem('parikh-orders', JSON.stringify(data));
+                } else {
+                    console.warn("API response not ok for orders, using localStorage fallback");
+                    loadLocalOrders();
+                }
+            } catch (error) {
+                console.warn("Could not connect to backend API for orders, using localStorage fallback:", error);
+                loadLocalOrders();
+            } finally {
+                setLoadingOrders(false);
+            }
+        };
+
         fetchProducts();
+        fetchOrders();
     }, []);
 
     const addProduct = async (product) => {
@@ -191,49 +227,112 @@ export const StoreProvider = ({ children }) => {
     };
 
     // --- Orders State ---
-    const [orders, setOrders] = useState(() => {
-        try {
-            const localData = localStorage.getItem('parikh-orders');
-            if (localData) {
-                const parsed = JSON.parse(localData);
-                if (Array.isArray(parsed)) {
-                    return parsed;
-                }
-            }
-            return [];
-        } catch {
-            return [];
-        }
-    });
+    const [orders, setOrders] = useState([]);
+    const [loadingOrders, setLoadingOrders] = useState(true);
 
-    useEffect(() => {
-        localStorage.setItem('parikh-orders', JSON.stringify(orders));
-    }, [orders]);
-
-    const placeOrder = (cartItems, customerDetails, paymentDetails = {}) => {
+    const placeOrder = async (cartItems, customerDetails, paymentDetails = {}) => {
         const newOrder = {
             id: `ORD-${Date.now()}`,
-            items: cartItems,
-            customer: customerDetails,
-            payment: paymentDetails,
-            date: new Date().toISOString(),
+            items: cartItems.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                image: item.image,
+                customization: item.customization || null
+            })),
+            customer: {
+                name: customerDetails.name,
+                email: customerDetails.email,
+                address: customerDetails.address,
+                phone: customerDetails.phone
+            },
+            total: customerDetails.total || cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0),
             status: 'Pending',
-            total: customerDetails.total || cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+            date: new Date().toISOString()
         };
+
+        // Optimistic update
         setOrders(prev => [newOrder, ...prev]);
+        localStorage.setItem('parikh-orders', JSON.stringify([newOrder, ...orders]));
+
+        try {
+            const response = await fetch(`${API_URL}/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newOrder)
+            });
+            if (response.ok) {
+                const savedOrder = await response.json();
+                setOrders(prev => {
+                    const updated = prev.map(o => o.id === newOrder.id ? savedOrder : o);
+                    localStorage.setItem('parikh-orders', JSON.stringify(updated));
+                    return updated;
+                });
+                return savedOrder;
+            }
+        } catch (error) {
+            console.error("Error adding order to backend:", error);
+        }
         return newOrder;
     };
 
-    const updateOrderStatus = (orderId, status) => {
-        setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status } : o));
+    const updateOrderStatus = async (orderId, status) => {
+        setOrders(prev => {
+            const updated = prev.map(o => o.id === orderId ? { ...o, status } : o);
+            localStorage.setItem('parikh-orders', JSON.stringify(updated));
+            return updated;
+        });
+
+        try {
+            await fetch(`${API_URL}/orders/${orderId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status })
+            });
+        } catch (error) {
+            console.error("Error updating order status in backend:", error);
+        }
     };
 
-    const cancelOrder = (orderId, reason) => {
-        setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: 'Cancelled', cancellationReason: reason } : o));
+    const cancelOrder = async (orderId, reason) => {
+        setOrders(prev => {
+            const updated = prev.map(o => o.id === orderId ? { ...o, status: 'Cancelled', cancellationReason: reason } : o);
+            localStorage.setItem('parikh-orders', JSON.stringify(updated));
+            return updated;
+        });
+
+        try {
+            await fetch(`${API_URL}/orders/${orderId}/status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: 'Cancelled', cancellationReason: reason })
+            });
+        } catch (error) {
+            console.error("Error cancelling order in backend:", error);
+        }
     };
 
-    const deleteOrder = (orderId) => {
-        setOrders(prev => prev.filter(o => o.id !== orderId));
+    const deleteOrder = async (orderId) => {
+        setOrders(prev => {
+            const updated = prev.filter(o => o.id !== orderId);
+            localStorage.setItem('parikh-orders', JSON.stringify(updated));
+            return updated;
+        });
+
+        try {
+            await fetch(`${API_URL}/orders/${orderId}`, {
+                method: 'DELETE'
+            });
+        } catch (error) {
+            console.error("Error deleting order from backend:", error);
+        }
     };
 
     // --- Link Click Tracking State ---
