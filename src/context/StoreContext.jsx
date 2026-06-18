@@ -46,23 +46,7 @@ const INITIAL_PRODUCTS = [
 ];
 
 const DEFAULT_LINK_CLICKS = {
-    'Main URL Visits (Homepage Loads)': 0,
-    'Navbar: Home': 0,
-    'Navbar: Products': 0,
-    'Navbar: Customise': 0,
-    'Navbar: Logo': 0,
-    'Navbar: Cart': 0,
-    'Navbar: My Orders': 0,
-    'Home: Explore Collection': 0,
-    'Home: Custom Design Studio': 0,
-    'Footer: All Products': 0,
-    'Footer: Customise': 0,
-    'Footer: About': 0,
-    'Footer: Contact': 0,
-    'Footer: Instagram': 0,
-    'Footer: Phone': 0,
-    'Footer: Email': 0,
-    'Footer: Map Address': 0
+    'Main URL Visits (Homepage Loads)': 0
 };
 
 export const StoreProvider = ({ children }) => {
@@ -362,6 +346,7 @@ export const StoreProvider = ({ children }) => {
     }, [linkClicks]);
 
     const trackClick = (linkKey) => {
+        if (linkKey !== 'Main URL Visits (Homepage Loads)') return;
         setLinkClicks(prev => {
             const safePrev = (prev && typeof prev === 'object' && !Array.isArray(prev)) ? prev : DEFAULT_LINK_CLICKS;
             return {

@@ -98,17 +98,15 @@ const AdminDashboard = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {Object.entries(linkClicks || {}).map(([linkName, clickCount]) => (
-                        <div key={linkName} className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800/80 flex justify-between items-center shadow-xs">
-                            <div>
-                                <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 block uppercase tracking-wider">{linkName}</span>
-                                <span className="text-2xl font-black text-gray-900 dark:text-white mt-1 block">{clickCount}</span>
-                            </div>
-                            <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary-light font-bold text-xs select-none">
-                                click
-                            </div>
+                    <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800/80 flex justify-between items-center shadow-xs">
+                        <div>
+                            <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 block uppercase tracking-wider">Main URL Visits (Homepage Loads)</span>
+                            <span className="text-2xl font-black text-gray-900 dark:text-white mt-1 block">{(linkClicks && linkClicks['Main URL Visits (Homepage Loads)']) || 0}</span>
                         </div>
-                    ))}
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary dark:text-primary-light font-bold text-xs select-none">
+                            click
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

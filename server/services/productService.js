@@ -104,18 +104,6 @@ export const productService = {
     getAll: async () => {
         if (isPostgresConnected()) {
             try {
-                // Check if PostgreSQL table is empty. If so, seed it.
-                const countRes = await pool.query('SELECT COUNT(*) FROM products');
-                const count = parseInt(countRes.rows[0].count, 10);
-                if (count === 0) {
-                    for (const prod of INITIAL_PRODUCTS) {
-                        await pool.query(
-                            `INSERT INTO products (id, name, category, price, mrp, image, images, "isNew", customisable, description) 
-                             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-                            [prod.id, prod.name, prod.category, prod.price, prod.mrp, prod.image, prod.images || [], prod.isNew || false, prod.customisable || 'can customise', prod.description]
-                        );
-                    }
-                }
                 const res = await pool.query('SELECT * FROM products ORDER BY "createdAt" DESC');
                 return res.rows.map(row => ({
                     ...row,

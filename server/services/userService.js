@@ -53,18 +53,6 @@ export const userService = {
     findOne: async (query) => {
         if (isPostgresConnected()) {
             try {
-                // Auto seed admin if collection is empty
-                const countRes = await pool.query('SELECT COUNT(*) FROM users');
-                const count = parseInt(countRes.rows[0].count, 10);
-                if (count === 0) {
-                    for (const user of INITIAL_USERS) {
-                        await pool.query(
-                            `INSERT INTO users (id, name, email, phone, address, state, pincode, password, role) 
-                             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-                            [user.id, user.name, user.email, user.phone || '', user.address || '', user.state || '', user.pincode || '', user.password, user.role]
-                        );
-                    }
-                }
                 if (query.email) {
                     const res = await pool.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [query.email]);
                     if (res.rows.length > 0) {
