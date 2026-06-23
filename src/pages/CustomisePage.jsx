@@ -208,7 +208,7 @@ const CustomisePage = () => {
                                         value={customText}
                                         onChange={(e) => setCustomText(e.target.value)}
                                         placeholder="Enter text..."
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-dark-bg dark:text-white"
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-primary focus:border-transparent dark:bg-dark-bg dark:text-white text-base md:text-sm font-medium"
                                     />
                                 </div>
 
@@ -218,7 +218,7 @@ const CustomisePage = () => {
                                         <select
                                             value={selectedFont}
                                             onChange={(e) => setSelectedFont(e.target.value)}
-                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-dark-bg dark:text-white"
+                                            className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-dark-bg dark:text-white text-base md:text-sm font-medium"
                                         >
                                             {FONTS.map(f => (
                                                 <option key={f.value} value={f.value}>{f.name}</option>

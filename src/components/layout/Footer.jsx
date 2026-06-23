@@ -84,7 +84,7 @@ const Footer = () => {
                             © {new Date().getFullYear()} PARIKH AGENCY. All rights reserved.
                         </p>
                         <p className="text-[10px] tracking-[0.2em] uppercase font-semibold text-gray-400 mt-1">
-                            Developed and Made by{" "}
+                            Developed and Designed by{" "}
                             <span className="text-gradient-brand font-black tracking-[0.1em] text-xs hover:opacity-80 transition-opacity">
                                 MILIN PARIKH
                             </span>

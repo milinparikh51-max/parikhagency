@@ -82,7 +82,7 @@ const VerifyOtp = () => {
                                 name="otp"
                                 type="text"
                                 required
-                                className="appearance-none rounded-xl relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-dark-bg focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm text-center tracking-[0.5em] font-mono text-xl transition-colors"
+                                className="appearance-none rounded-xl relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-dark-bg focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-base sm:text-sm text-center tracking-[0.5em] font-mono text-xl transition-colors"
                                 placeholder="000000"
                                 value={otp}
                                 onChange={(e) => setOtp(e.target.value)}

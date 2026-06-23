@@ -178,7 +178,7 @@ const ProductDetailsPage = () => {
                                         setPincode(val);
                                         setDeliveryStatus(null);
                                     }}
-                                    className="flex-grow px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-650 dark:border-gray-600 focus:outline-none focus:border-primary text-sm font-medium"
+                                    className="flex-grow px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-650 dark:border-gray-600 focus:outline-none focus:border-primary text-base md:text-sm font-medium"
                                 />
                                 <button
                                     onClick={checkDelivery}
@@ -227,7 +227,7 @@ const ProductDetailsPage = () => {
                                         placeholder="Enter text to print..."
                                         value={customText}
                                         onChange={(e) => setCustomText(e.target.value)}
-                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 focus:outline-none focus:border-primary"
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 focus:outline-none focus:border-primary text-base md:text-sm font-medium"
                                     />
                                 </div>
                             </div>

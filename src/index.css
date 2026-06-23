@@ -52,3 +52,34 @@ body {
     background-position: 4rem 4rem;
   }
 }
+
+/* iOS Safari backdrop-filter compatibility */
+.backdrop-blur-xs {
+  -webkit-backdrop-filter: blur(2px);
+}
+.backdrop-blur-sm {
+  -webkit-backdrop-filter: blur(4px);
+}
+.backdrop-blur {
+  -webkit-backdrop-filter: blur(8px);
+}
+.backdrop-blur-md {
+  -webkit-backdrop-filter: blur(12px);
+}
+.backdrop-blur-lg {
+  -webkit-backdrop-filter: blur(16px);
+}
+.backdrop-blur-xl {
+  -webkit-backdrop-filter: blur(24px);
+}
+.backdrop-blur-2xl {
+  -webkit-backdrop-filter: blur(40px);
+}
+.backdrop-blur-3xl {
+  -webkit-backdrop-filter: blur(64px);
+}
+
+/* iOS safe area bottom padding helper */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}

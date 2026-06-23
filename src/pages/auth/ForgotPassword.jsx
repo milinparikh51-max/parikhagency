@@ -80,7 +80,7 @@ const ForgotPassword = () => {
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    className="appearance-none rounded-xl relative block w-full px-3 py-3 pl-10 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-dark-bg focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-colors"
+                                    className="appearance-none rounded-xl relative block w-full px-3 py-3 pl-10 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-dark-bg focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-base sm:text-sm transition-colors"
                                     placeholder="Enter your email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}

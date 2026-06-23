@@ -115,7 +115,7 @@ const UserRegister = () => {
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                    className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                     placeholder="John Doe"
                                 />
                             </div>
@@ -136,7 +136,7 @@ const UserRegister = () => {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                    className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                     placeholder="john@example.com"
                                 />
                             </div>
@@ -157,7 +157,7 @@ const UserRegister = () => {
                                     required
                                     value={formData.phone}
                                     onChange={handleChange}
-                                    className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                    className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                     placeholder="+1 234 567 890"
                                 />
                             </div>
@@ -179,7 +179,7 @@ const UserRegister = () => {
                                         required
                                         value={formData.city}
                                         onChange={handleChange}
-                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                         placeholder="Mumbai"
                                     />
                                 </div>
@@ -197,7 +197,7 @@ const UserRegister = () => {
                                         required
                                         value={formData.gender}
                                         onChange={handleChange}
-                                        className="block w-full pl-10 pr-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                        className="block w-full pl-10 pr-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                     >
                                         <option value="" disabled className="bg-[#131125]">Select Gender</option>
                                         <option value="Male" className="bg-[#131125]">Male</option>
@@ -223,7 +223,7 @@ const UserRegister = () => {
                                     rows="2"
                                     value={formData.address}
                                     onChange={handleChange}
-                                    className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                    className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                     placeholder="123 Main St, City, Country"
                                 />
                             </div>
@@ -245,7 +245,7 @@ const UserRegister = () => {
                                         required
                                         value={formData.state}
                                         onChange={handleChange}
-                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                         placeholder="Maharashtra"
                                     />
                                 </div>
@@ -264,7 +264,7 @@ const UserRegister = () => {
                                         required
                                         value={formData.pincode}
                                         onChange={handleChange}
-                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                         placeholder="400001"
                                     />
                                 </div>
@@ -287,7 +287,7 @@ const UserRegister = () => {
                                         required
                                         value={formData.password}
                                         onChange={handleChange}
-                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                         placeholder="••••••••"
                                     />
                                 </div>
@@ -306,7 +306,7 @@ const UserRegister = () => {
                                         required
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
-                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] sm:text-sm transition-all bg-[#080710] text-white"
+                                        className="block w-full pl-10 px-3 py-2.5 border border-gray-800 focus:border-[#0066ff] rounded-lg shadow-sm placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-[#0066ff] text-base sm:text-sm transition-all bg-[#080710] text-white"
                                         placeholder="••••••••"
                                     />
                                 </div>

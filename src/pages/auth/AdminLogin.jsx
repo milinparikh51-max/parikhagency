@@ -73,7 +73,7 @@ const AdminLogin = () => {
                                 name="email"
                                 type="text"
                                 required
-                                className="appearance-none rounded-t-lg relative block w-full px-4 py-3 border border-gray-600 placeholder-gray-500 text-white bg-gray-900/60 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-colors"
+                                className="appearance-none rounded-t-lg relative block w-full px-4 py-3 border border-gray-600 placeholder-gray-500 text-white bg-gray-900/60 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 text-base sm:text-sm transition-colors"
                                 placeholder="Admin ID / Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
@@ -92,7 +92,7 @@ const AdminLogin = () => {
                                 name="password"
                                 type="password"
                                 required
-                                className="appearance-none rounded-b-lg relative block w-full px-4 py-3 border border-gray-600 placeholder-gray-500 text-white bg-gray-900/60 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm transition-colors"
+                                className="appearance-none rounded-b-lg relative block w-full px-4 py-3 border border-gray-600 placeholder-gray-500 text-white bg-gray-900/60 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 text-base sm:text-sm transition-colors"
                                 placeholder="Secure Password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}

@@ -120,7 +120,7 @@ const CartDrawer = () => {
                                 )}
                             </div>
 
-                            <div className="p-6 border-t border-gray-100 dark:border-dark-card bg-gray-50 dark:bg-dark-card">
+                            <div className="p-6 pb-safe border-t border-gray-100 dark:border-dark-card bg-gray-50 dark:bg-dark-card">
                                 <div className="space-y-2 mb-4">
                                     <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
                                         <span>Subtotal</span>

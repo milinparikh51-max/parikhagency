@@ -267,7 +267,7 @@ const AdminProducts = () => {
                                     type="text"
                                     value={newItem.name}
                                     onChange={e => setNewItem({ ...newItem, name: e.target.value })}
-                                    className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600"
+                                    className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 text-base md:text-sm font-medium"
                                 />
                             </div>
 
@@ -277,7 +277,7 @@ const AdminProducts = () => {
                                     <select
                                         value={newItem.category}
                                         onChange={e => setNewItem({ ...newItem, category: e.target.value })}
-                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600"
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 text-base md:text-sm font-medium"
                                     >
                                         {["Pens", "Mugs", "Apparel", "Stationery", "Accessories"].map(c => <option key={c} value={c}>{c}</option>)}
                                     </select>
@@ -287,7 +287,7 @@ const AdminProducts = () => {
                                     <select
                                         value={newItem.customisable}
                                         onChange={e => setNewItem({ ...newItem, customisable: e.target.value })}
-                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600"
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 text-base md:text-sm font-medium"
                                     >
                                         <option value="can customise">Can customise</option>
                                         <option value="can not customised">Can not customise</option>
@@ -303,7 +303,7 @@ const AdminProducts = () => {
                                         type="number"
                                         value={newItem.mrp}
                                         onChange={e => setNewItem({ ...newItem, mrp: e.target.value })}
-                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600"
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 text-base md:text-sm font-medium"
                                     />
                                 </div>
                                 <div>
@@ -313,7 +313,7 @@ const AdminProducts = () => {
                                         type="number"
                                         value={newItem.price}
                                         onChange={e => setNewItem({ ...newItem, price: e.target.value })}
-                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600"
+                                        className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 text-base md:text-sm font-medium"
                                     />
                                 </div>
                             </div>
@@ -337,7 +337,7 @@ const AdminProducts = () => {
                                     rows="3"
                                     value={newItem.description}
                                     onChange={e => setNewItem({ ...newItem, description: e.target.value })}
-                                    className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 focus:outline-none focus:border-primary text-sm font-medium"
+                                    className="w-full px-4 py-2 border rounded-lg dark:bg-dark-bg dark:text-white dark:border-gray-600 focus:outline-none focus:border-primary text-base md:text-sm font-medium"
                                     placeholder="Enter description or click auto-generate..."
                                 />
                             </div>
