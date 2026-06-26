@@ -4,7 +4,23 @@ const StoreContext = createContext();
 
 export const useStore = () => useContext(StoreContext);
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const getApiUrl = () => {
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+    }
+    const customUrl = localStorage.getItem('custom_api_url');
+    if (customUrl) {
+        return customUrl;
+    }
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.match(/^\d+\.\d+\.\d+\.\d+$/)) {
+        return `http://${hostname}:5000/api`;
+    }
+    return 'http://localhost:5000/api';
+};
+
+const API_URL = getApiUrl();
+
 
 const INITIAL_PRODUCTS = [
     {
