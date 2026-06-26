@@ -13,7 +13,9 @@ const getApiUrl = () => {
     if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.match(/^\d+\.\d+\.\d+\.\d+$/)) {
         return `http://${hostname}:5000/api`;
     }
-    return 'http://localhost:5000/api';
+    // Fallback for production deployment (e.g. Render, Railway). 
+    // Replace this placeholder with your actual deployed backend URL when ready.
+    return 'https://YOUR_DEPLOYED_BACKEND_URL.onrender.com/api';
 };
 
 const API_URL = getApiUrl();
