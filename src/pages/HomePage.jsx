@@ -46,7 +46,7 @@ const HomePage = () => {
     ], []);
 
     return (
-        <div className="space-y-24 pb-24 bg-gradient-to-b from-[#080710] to-[#0f0e26] text-white min-h-screen overflow-x-clip relative pt-12">
+        <div className="space-y-24 pb-24 text-white min-h-screen overflow-x-clip relative pt-12">
             
             {/* Cyber Dust Twinkling Particles */}
             <div className="absolute inset-0 overflow-x-clip pointer-events-none z-0">

@@ -7,7 +7,7 @@ const AboutPage = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="space-y-24 pb-24 bg-gradient-to-b from-[#080710] to-[#0f0e26] text-white min-h-screen pt-12 relative overflow-hidden">
+        <div className="space-y-24 pb-24 text-white min-h-screen pt-12 relative overflow-hidden">
             {/* Ambient Background Blobs */}
             <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-40 left-10 w-72 h-72 bg-[#0066ff]/5 rounded-full blur-[100px]" />
