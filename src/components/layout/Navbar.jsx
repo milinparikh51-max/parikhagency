@@ -27,10 +27,11 @@ const Navbar = () => {
                     <div className="flex justify-between items-center h-16 md:h-18">
                         {/* Logo */}
                         <Link to="/" onClick={() => trackClick('Navbar: Logo')} className="flex items-center gap-2.5 group">
-                            <div className="relative w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-md shadow-white/5 group-hover:shadow-white/20 transition-all duration-300">
-                                <span className="text-black font-black text-lg tracking-tighter">P</span>
+                            <div className="relative w-8 h-8 rounded-lg bg-gradient-to-tr from-[#7c3aed] via-[#0066ff] to-[#00ff87] flex items-center justify-center shadow-md shadow-[#0066ff]/20 group-hover:shadow-[#00ff87]/30 transition-all duration-300">
+                                <span className="text-white font-black text-lg tracking-tighter">P</span>
+                                <div className="absolute inset-0 rounded-lg border border-white/10 group-hover:border-white/30 transition-colors" />
                             </div>
-                            <span className="text-xl md:text-2xl font-black tracking-widest text-white group-hover:text-gray-300 transition-colors duration-300">
+                            <span className="text-xl md:text-2xl font-black tracking-widest bg-gradient-to-r from-[#7c3aed] via-[#0066ff] via-[#00a896] to-[#00ff87] bg-clip-text text-transparent group-hover:brightness-110 transition-all duration-300">
                                 PARIKH AGENCY
                             </span>
                         </Link>
