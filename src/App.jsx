@@ -21,6 +21,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import ProductDetailsPage from './pages/ProductDetailsPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import AboutPage from './pages/AboutPage';
+import ScrollToTop from './components/common/ScrollToTop';
 
 import CinematicIntro from './components/layout/CinematicIntro';
 
@@ -38,6 +39,7 @@ function App() {
     <AuthProvider>
       <StoreProvider>
         <CartProvider>
+          <ScrollToTop />
           {showIntro && (
             <CinematicIntro onComplete={() => setShowIntro(false)} />
           )}
